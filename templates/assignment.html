@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="container assignment">
+        <h2>{{ assignment.name }}</h2>
+        <div class="col-md-4 ml-auto">
+            from <time>{{ assignment.start }}</time>
+            to <time>{{ assignment.due }}</time>
+        </div>
+        <p>{{ assignment.content }}</p>
+    </div>
+{% endblock %}

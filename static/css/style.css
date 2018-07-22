@@ -1,0 +1,58 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
+
+/* Clearfix */
+.clear:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+/* Link hover */
+.link-trans:hover {
+    color: #007bff;
+    transition: all 0.3s linear;
+}
+
+/* Base */
+html, body { height: 100%; }
+
+body {
+    font: 16px/1 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    color: #666;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+nav.navbar {
+    height: 60px;
+    font-size: 24px;
+    border-bottom: 3px solid #eee;
+}
+
+nav.navbar > div {
+    margin: 0 auto;
+    width: 768px;
+    display: flex;
+    align-items: center;
+}
+
+nav.navbar ul.navbar-nav li.nav-item {
+    padding: 12px;
+    margin: 12px;
+}
+
+#wrapper {
+    margin: 0 auto;
+    padding: 12px;
+    width: 768px;
+}
+
+#assignments {
+    list-style-type: none;
+}
+
+#assignments a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
