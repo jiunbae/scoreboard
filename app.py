@@ -20,5 +20,9 @@ def assignment(pid):
 def submit():
     return render_template('submit.html')
 
+@app.route('/profile')
+def profile():
+    return render_template('login.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
