@@ -56,10 +56,16 @@ nav.navbar ul.navbar-nav li.nav-item {
     text-decoration: inherit;
 }
 
-form#login {
+#login form {
     width: 350px;
+    height: 250px;
     border: 2px solid #eee;
     padding: 24px;
     padding-bottom: 0px;
+}
+
+#login p {
+    font-size: 1.2em;
+    line-height: 1.4em;
 }
 
