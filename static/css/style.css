@@ -13,6 +13,10 @@
     transition: all 0.3s linear;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 /* Base */
 html, body { height: 100%; }
 
@@ -69,3 +73,24 @@ nav.navbar ul.navbar-nav li.nav-item {
     line-height: 1.4em;
 }
 
+.assignment {
+}
+.assignment .content {
+    margin-top: 24px;
+    font-size: 18px;
+    line-height: 1.4em;
+}
+
+.upload ul li {
+    margin-top: 4px;
+}
+.upload .upload-label {
+    width: 100%;
+    height: 38px;
+    font-size: 16px;
+}
+.submit button {
+    width: 100%;
+    height: 38px;
+    font-size: 16px;
+}

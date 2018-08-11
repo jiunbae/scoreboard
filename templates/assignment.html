@@ -7,8 +7,35 @@
             from <time>{{ assignment.start }}</time>
             to <time>{{ assignment.due }}</time>
         </div>
-        <p>{{ assignment.content }}</p>
+        
+        <p class="content">{{ assignment.content }}</p>
     </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <hr>
+    <form>
+        <div class="container upload row">
+            <div class="col-9">
+                <ul class="form-group">
+                    <li>Your submission should be in <strong>CSV</strong> format.</li>
+                    <li>We expect the solution file to have <strong>6925 prediction rows</strong>.</li>
+                    <li>This file should have a <strong>header row</strong>.</li>
+                </ul>
+            </div>
+            <div class="col-3">
+                <label class="btn btn-outline-primary upload-label">
+                    <i class="fas fa-file-upload"></i> Upload<input type="file" id="upload" hidden>
+                </label>
+            </div>
+        </div>
+        <div class="container submit row">
+            <div class="input-group mb-3 col-9">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Describe submission</span>
+                </div>
+                <input type="text" class="form-control" id="description" aria-label="Submission-Title" placeholder="description">
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-outline-success">Submit</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}
