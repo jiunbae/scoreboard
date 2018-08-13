@@ -1,19 +1,21 @@
-from app import db
-
 from datetime import datetime
 
-class Assignment(db.Model):
+from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy.orm import relationship
+
+from app import Base
+
+class Assignment(Base):
     __tablename__ = 'assignment'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
-    id          = db.Column(db.Integer, primary_key=True, unique=True)
-    title       = db.Column(db.String(64))
-    content     = db.Column(db.Text)
-    cate        = db.Column(db.Integer)
-    start       = db.Column(db.DateTime)
-    due         = db.Column(db.DateTime)
-    created     = db.Column(db.DateTime)
-    submissions = db.relationship("submission")
+    id          = Column(Integer, primary_key=True, unique=True)
+    title       = Column(String(64))
+    content     = Column(Text)
+    cate        = Column(Integer)
+    start       = Column(DateTime)
+    due         = Column(DateTime)
+    submissions = relationship("submission")
 
     def __init__(self, id, title, content, cate, start, due):
         self.id = id
@@ -22,7 +24,6 @@ class Assignment(db.Model):
         self.cate = cate
         self.start = start
         self.due = due
-        self.created = datetime.now()
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.id, self.title, self.content, self.cate, self.start, self.due]))

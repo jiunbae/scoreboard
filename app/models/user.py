@@ -1,13 +1,16 @@
-from app import db
+from app import Base
 
-class User(db.Model):
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+
+class User(Base):
     __tablename__ = 'user'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
-    id          = db.Column(db.Integer, primary_key=True, unique=True)
-    studentid   = db.Column(db.String(12))
-    pw          = db.Column(db.String(32))
-    submissions = db.relationship("submission")
+    id          = Column(Integer, primary_key=True, unique=True)
+    studentid   = Column(String(12))
+    pw          = Column(String(32))
+    submissions = relationship("submission")
 
     def __init__(self, studentid, pw):
         self.id = id

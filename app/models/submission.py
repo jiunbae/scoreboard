@@ -1,17 +1,21 @@
-from app import db
-
 from datetime import datetime
 
-class Submission(db.Model):
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship, backref
+
+from app import Base
+
+class Submission(Base):
     __tablename__ = 'submission'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
-    id      = db.Column(db.Integer, primary_key=True, unique=True)
-    desc    = db.Column(db.String(128))
-    file    = db.Column(db.String(128))
-    aid     = db.Column(db.Integer, db.ForeignKey('assignment.id'))
-    uid     = db.Column(db.Integer, db.ForeignKey('user.id'))
-    created = db.Column(db.DateTime)
+    id      = Column(Integer, primary_key=True, unique=True)
+    desc    = Column(String(128))
+    file    = Column(String(128))
+    aid     = Column(Integer, ForeignKey('assignment.id'))
+    uid     = Column(Integer, ForeignKey('user.id'))
+
+    user    = relationship("User", backref=backref('submission', order_by=id))
 
     def __init__(self, id, desc, file, pid, uid):
         self.id = id
