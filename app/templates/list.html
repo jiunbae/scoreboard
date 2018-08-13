@@ -14,7 +14,7 @@
         {% for assignment in assignments %}
         <tr>
           <th scope="row">{{ assignment.id }}</th>
-          <td><a href="/assignment/{{ assignment.id }}">{{ assignment.name }}</a></td>
+          <td><a href="/assignment/{{ assignment.id }}">{{ assignment.title }}</a></td>
           <td>{{ assignment.start }}</td>
           <td>{{ assignment.due }}</td>
         </tr>
