@@ -4,8 +4,8 @@ from app.controller import Assignment as controller
 
 assignment = Router('assignment')
 
-assignment.route('/').get = controller.index
-assignment.route('/').post = controller.create
+assignment.route('/').GET = controller.index
+assignment.route('/').POST = controller.create
 
-assignment.route('/<aid>').get = controller.show
-assignment.route('/<aid>').delete = controller.destroy
+assignment.route('/<aid>').GET = controller.show
+assignment.route('/<aid>').DELETE = controller.destroy
