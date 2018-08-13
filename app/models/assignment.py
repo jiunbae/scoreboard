@@ -15,10 +15,10 @@ class Assignment(Base):
     cate        = Column(Integer)
     start       = Column(DateTime)
     due         = Column(DateTime)
-    submissions = relationship("submission")
+    submissions = relationship("Submission")
 
-    def __init__(self, id, title, content, cate, start, due):
-        self.id = id
+    def __init__(self, title, content, cate, start, due):
+        print ('assignment init')
         self.title = title
         self.content = content
         self.cate = cate
@@ -27,6 +27,3 @@ class Assignment(Base):
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.id, self.title, self.content, self.cate, self.start, self.due]))
-
-    def __dict__(self) -> dict:
-        return {col.name: getattr(self, col.name) for col in self.__table__.columns}

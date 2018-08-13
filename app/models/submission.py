@@ -17,8 +17,7 @@ class Submission(Base):
 
     user    = relationship("User", backref=backref('submission', order_by=id))
 
-    def __init__(self, id, desc, file, pid, uid):
-        self.id = id
+    def __init__(self, desc, file, pid, uid):
         self.desc = desc
         self.file = file
         self.aid = aid
@@ -26,6 +25,3 @@ class Submission(Base):
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.id, self.title, self.content, self.cate, self.start, self.due]))
-
-    def __dict__(self) -> dict:
-        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
