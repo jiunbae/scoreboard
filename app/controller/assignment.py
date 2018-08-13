@@ -1,27 +1,24 @@
-from app.models import Assignment as assignment
+from app import Session
+from app.models import Assignment as model
 
 class Assignment():
     @staticmethod
     def index():
-        pass
+        return [instance.__dict__ for instance in Session.query(model).all()]
 
     @staticmethod
-    def show():
-        pass
+    def create(data):
+        Session.add(model(**data))
+        Session.commit()
 
     @staticmethod
-    def destroy():
-        pass
+    def show(aid):
+        try:
+            return Session.query(model).get(aid)
+        except:
+            return None
 
     @staticmethod
-    def create():
+    def destroy(aid):
         pass
 
-
-# @app.route('/assignments')
-# def assignments():
-#     return render_template('list.html', assignments=get_assignments())
-
-# @app.route('/assignment/<pid>')
-# def assignment(pid):
-#     return render_template('assignment.html', pid=pid, assignment=get_assignment(int(pid)))
