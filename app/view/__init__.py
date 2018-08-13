@@ -3,6 +3,7 @@ from os.path import dirname, basename, isfile
 from typing import Callable
 from collections import defaultdict
 from urllib.parse import urljoin
+from functools import partial 
 
 from flask import render_template, request
 
@@ -11,7 +12,6 @@ from app.lib.attrcallback import AttrCallback
 
 class Router:
     routers = list()
-
     def __init__(self, route: str = '/'):
         self.routes = defaultdict(dict)
         self.url = None
@@ -33,17 +33,11 @@ from app.view.assignment import assignment
 
 for route, router in Router.routers:
     for url, handler in router.items():
-        view = lambda *args: handler[request.method](*args)
-        view.__name__ = str(id(view))
-        app.add_url_rule(urljoin('//'+route, url)[1:],
-                        view_func = view,
-                        methods   = handler.keys())
+        view = partial(lambda h, *args, **kwargs: h[request.method](*args, **kwargs), handler)
+        name = urljoin('//'+route, url)[1:]
+        view.__name__ = view.__qualname__ = '_route_' + name
+        app.route(name, methods=handler.keys())(view)
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route("/site-map")
-def site_map():
-    print (app.url_map)
-    return [(url_for(rule.endpoint, **(rule.defaults or {})), rule.endpoint) for rule in app.url_map.iter.rules()]
