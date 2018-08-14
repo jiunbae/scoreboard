@@ -4,6 +4,7 @@
         "user": "root",
         "db": "test"
     }, "APP": {
-        "secret_key": "20180814"
+        "secret_key": "20180814",
+        "upload_folder": "./temp/"
     }
 }
