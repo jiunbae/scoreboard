@@ -4,14 +4,14 @@
     <div class="container assignment">
         <h2>{{ assignment.title }}</h2>
         <div class="col-md-4 ml-auto">
-            from <time>{{ assignment.start }}</time>
-            to <time>{{ assignment.due }}</time>
+            from<time datetime="{{ assignment.start }}">{{ assignment.start }}</time>
+            to<time datetime="{{ assignment.due }}">{{ assignment.due }}</time>
         </div>
         
         <p class="content">{{ assignment.content }}</p>
     </div>
     <hr>
-    <form>
+    <form id="submission" method="POST" enctype="multipart/form-data">
         <div class="container upload row">
             <div class="col-9">
                 <ul class="form-group">
@@ -22,19 +22,19 @@
             </div>
             <div class="col-3">
                 <label class="btn btn-outline-primary upload-label">
-                    <i class="fas fa-file-upload"></i> Upload<input type="file" id="upload" hidden>
+                    <i class="fas fa-file-upload"></i> Upload<input type="file" name="file" id="upload" hidden>
                 </label>
             </div>
         </div>
         <div class="container submit row">
             <div class="input-group mb-3 col-9">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Describe submission</span>
+                    <span class="input-group-text">Describe submission</span>
                 </div>
-                <input type="text" class="form-control" id="description" aria-label="Submission-Title" placeholder="description">
+                <input type="text" class="form-control" name="description" aria-label="Submission-Title" placeholder="description">
             </div>
             <div class="col-3">
-                <button type="button" class="btn btn-outline-success">Submit</button>
+                <input type="submit" class="btn btn-outline-success" name="submit" value="Submit">
             </div>
         </div>
     </form>

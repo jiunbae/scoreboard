@@ -8,22 +8,22 @@
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
     </div>
-    <form class="col-5">
+    <form class="col-5" id="login" method="POST">
       <div class="form-group row">
         <label for="inputEmail3" class="col-sm-3 col-form-label">ID</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" id="inputEmail3" placeholder="Student Number">
+          <input type="text" class="form-control" name="studentid" placeholder="Student Number">
         </div>
       </div>
       <div class="form-group row">
         <label for="inputPassword3" class="col-sm-3 col-form-label">Password</label>
         <div class="col-sm-9">
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password">
         </div>
       </div>
       <div class="form-group row">
         <div class="col-sm-12">
-          <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+          <input type="submit" class="btn btn-primary btn-block" value="Sign in"></input>
         </div>
       </div>
       <hr>
