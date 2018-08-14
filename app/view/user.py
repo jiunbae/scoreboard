@@ -23,8 +23,9 @@ def destroy(uid):
     return redirect('/')
 user.route('/').DELETE = destroy
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
+    print ('login', request.method)
     if request.method == 'GET':
         return render_template('login.html')
     elif request.method == 'POST':
@@ -37,9 +38,9 @@ def login():
             pass
         return redirect('/')
 
-@app.route('/logout', methods=['POST'])
+@app.route('/logout/', methods=['GET'])
 @login_required
 def logout():
-    if request.method == 'POST':
+    if request.method == 'GET':
         controller.logout()
-        redirect('/')
+        return redirect('/')

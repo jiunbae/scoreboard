@@ -3,6 +3,8 @@ from flask_login import login_required
 
 from app import app
 from app.view import Router
+from app.controller import User
+from app.controller import Submission
 from app.controller import Assignment as controller
 
 assignment = Router('assignment')
@@ -24,10 +26,15 @@ def show(aid):
     return render_template('assignment.html', aid=aid, assignment=controller.show(aid))
 assignment.route('/<aid>').GET = show
 
+@login_required
 def submit(aid):
-    data = request.form['description']
     file = request.files['file']
-    print (data, file)
+    submission = Submission.create({
+        'desc': request.form.get('description'),
+        'file': Submission.write_file(file),
+        'aid': controller.show(aid).id,
+        'uid': User.current().id,
+    })
     return redirect('/')
 assignment.route('/<aid>').POST = submit
 
