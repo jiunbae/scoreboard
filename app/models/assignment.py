@@ -18,7 +18,6 @@ class Assignment(Base):
     submissions = relationship("Submission")
 
     def __init__(self, title, content, cate, start, due):
-        print ('assignment init')
         self.title = title
         self.content = content
         self.cate = cate

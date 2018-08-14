@@ -24,4 +24,4 @@ class Submission(Base):
         self.uid = uid
 
     def __repr__(self) -> str:
-        return ','.join(map(str, [self.id, self.title, self.content, self.cate, self.start, self.due]))
+        return ','.join(map(str, [self.desc, self.file, self.aid, self.uid]))
