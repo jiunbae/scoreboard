@@ -15,6 +15,7 @@ login_manager.login_view = "login"
 
 # app config
 app.secret_key = conf['APP']['secret_key']
+app.config['UPLOAD_FOLDER'] = conf['APP']['upload_folder']
 
 # db
 Engine      = create_engine('mysql+pymysql://{}@{}/{}?charset=utf8'.format(
