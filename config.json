@@ -1,0 +1,9 @@
+{
+    "DB": {
+        "server": "localhost",
+        "user": "root",
+        "db": "test"
+    }, "APP": {
+        "secret_key": "20180814"
+    }
+}
