@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Boolean, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 from app import Base
@@ -14,6 +14,10 @@ class Submission(Base):
     file        = Column(String(128))
     aid         = Column(Integer, ForeignKey('assignment.id'))
     uid         = Column(Integer, ForeignKey('user.id'))
+
+    scoring     = Column(Boolean, default=False)
+    score       = Column(Float, default=.0)
+    result      = Column(String(128), default='')
 
     user        = relationship("User", backref=backref('submission', order_by=id))
     assignment  = relationship("Assignment", backref=backref('submission', order_by=id))
