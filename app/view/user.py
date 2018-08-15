@@ -9,7 +9,6 @@ user = Router('user')
 
 def profile():
     instance = controller.current()
-    print (instance)
     return redirect('/')
 user.route('/').GET = profile
 
@@ -25,7 +24,6 @@ user.route('/').DELETE = destroy
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    print ('login', request.method)
     if request.method == 'GET':
         return render_template('login.html')
     elif request.method == 'POST':
