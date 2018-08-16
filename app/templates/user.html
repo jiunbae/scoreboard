@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+
+{% block body %}
+  <div id="user" class="row">
+    <form class="col-5 info-box" id="user" method="POST">
+      <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-4 col-form-label">ID</label>
+        <div class="col-sm-8">
+          <label type="text" class="form-control" name="studentid" placeholder="Student Number" readonly>{{ user.studentid }}</label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-4 col-form-label">Old Pass</label>
+        <div class="col-sm-8">
+          <input type="password" class="form-control" name="oldPassword" placeholder="Old Password">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-4 col-form-label">New Pass</label>
+        <div class="col-sm-8">
+          <input type="password" class="form-control" name="newPassword" placeholder="New Password">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <input type="submit" class="btn btn-success btn-block" id="change" value="Change"></input>
+        </div>
+        <div class="col-sm-6">
+          <input type="button" class="btn btn-danger btn-block" id="signout" value="Sign out"></input>
+        </div>
+      </div>
+    </form>
+    <div class="col-7">
+      <h4>Welcom to the CVLab</h4>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </div>
+  </div>
+  <table id="submissions" class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">aid</th>
+        <th scope="col">Description</th>
+        <th scope="col">Score</th>
+        <th scope="col">Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for submission in submissions %}
+      <tr>
+        <th scope="row"><a href="/submission/{{ submission.id }}">{{ submission.id }}</a></th>
+        <td><a href="/assignment/{{ submission.aid }}">{{ submission.aid }}</a></td>
+        <td>{{ submission.desc }}</td>
+        <td>{{ submission.score }}</td>
+        <td>{{ submission.result }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
