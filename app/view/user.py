@@ -1,15 +1,16 @@
-from flask import request, render_template, redirect
 from flask_login import login_required
 
 from app import app
 from app.view import Router
+from app.view import request, render, redirect
 from app.controller import User as controller
 
 user = Router('user')
 
+@login_required
 def profile():
     instance = controller.current()
-    return redirect('/')
+    return render('user.html', submissions=instance.submissions)
 user.route('/').GET = profile
 
 def create():
@@ -25,7 +26,7 @@ user.route('/').DELETE = destroy
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render('login.html', user=controller.current())
     elif request.method == 'POST':
         studentid = request.form.get('studentid')
         password = request.form.get('password')
@@ -34,11 +35,12 @@ def login():
         # no user registered
         if not instance:
             pass
+
         return redirect('/')
 
-@app.route('/logout/', methods=['GET'])
+@app.route('/logout/', methods=['POST'])
 @login_required
 def logout():
-    if request.method == 'GET':
+    if request.method == 'POST':
         controller.logout()
         return redirect('/')
