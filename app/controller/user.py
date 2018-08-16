@@ -13,9 +13,8 @@ class User(Controller):
     model = user
 
     @classmethod
-    @login_required
     def current(cls) -> user:
-        return current_user
+        return current_user if current_user.is_authenticated else None
 
     @classmethod
     def login(cls, sid: int, pw: str) -> Optional[Base]:

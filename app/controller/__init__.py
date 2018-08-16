@@ -46,3 +46,6 @@ __all__ = list(map(lambda f: f.split('.')[0], modules))
 from .assignment import Assignment
 from .submission import Submission
 from .user import User
+
+def default_params():
+    return {'user': User.current()}
