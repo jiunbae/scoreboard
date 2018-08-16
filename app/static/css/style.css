@@ -60,17 +60,21 @@ nav.navbar ul.navbar-nav li.nav-item {
     text-decoration: inherit;
 }
 
-#login form {
+#login p {
+    font-size: 1.2em;
+    line-height: 1.4em;
+}
+
+#user {
+    margin-bottom: 16px;
+}
+
+form.info-box {
     width: 350px;
     height: 250px;
     border: 2px solid #eee;
     padding: 24px;
     padding-bottom: 0px;
-}
-
-#login p {
-    font-size: 1.2em;
-    line-height: 1.4em;
 }
 
 .assignment {

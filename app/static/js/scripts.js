@@ -7,4 +7,11 @@ $(document).ready(function(){
       target.val(description);
     }
   });
+
+  $('#signout').click((e) => {
+    $.post("/logout/")
+     .done((data) => {
+        window.location.replace("/");
+     });
+  });
 });
