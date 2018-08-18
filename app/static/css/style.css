@@ -45,9 +45,26 @@ nav.navbar ul.navbar-nav li.nav-item {
     margin: 12px;
 }
 
+nav.navbar .nav-link {
+    font-size: 18px;
+}
+
+nav.navbar .nav-link.nav-icon {
+    font-size: 28px;
+}
+
+#flash {
+    margin: 0 auto;
+    padding: 16px;
+    width: 768px;
+}
+
+#flash ul li {
+    list-style-type: none
+}
+
 #wrapper {
     margin: 0 auto;
-    padding: 12px;
     width: 768px;
 }
 
