@@ -12,33 +12,21 @@
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div>
-      <a class="navbar-brand" href="/">CVLab</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/assignment/"><i class="fas fa-clipboard-list"></i></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/"><i class="fas fa-bullhorn"></i></a>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            {% if user is none %}      
-              <a class="nav-link" href="/login"><i class="far fa-user-circle"></i></a>
-            {% else %}
-              <a class="nav-link" href="/user"><i class="fas fa-user-circle"></i></a>
-            {% endif %}
-          </li>
-        </ul>
-      </div>
+  {% include "navigation.html" %}
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <section id="flash">
+    <div class="alert alert-primary" role="alert">
+      <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
     </div>
-  </nav>
+  </section>
+  {% endif %}
+  {% endwith %}
 
   <section id="wrapper">
     {% block body %}
@@ -48,8 +36,7 @@
   </section>
 
   <footer>
-    {% block footer %}
-    {% endblock %}
+    {% include "footer.html" %}
   </footer>
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

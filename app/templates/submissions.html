@@ -1,0 +1,22 @@
+  <table id="submissions" class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Assignment</th>
+        <th scope="col">Description</th>
+        <th scope="col">State</th>
+        <th scope="col">Score</th>
+        <th scope="col">Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for submission in submissions %}
+      <tr>
+        <td scope="row"><a href="/assignment/{{ submission.aid }}">{{ submission.aid }}</a></td>
+        <td><a href="/submission/{{ submission.id }}">{{ submission.desc }}</a></td>
+        <td>{{ submission.state }}</td>
+        <td>{{ submission.score }}</td>
+        <td>{{ submission.result }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
