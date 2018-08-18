@@ -2,7 +2,7 @@ from flask_login import login_required
 
 from app import app
 from app.view import Router
-from app.view import request, render, redirect
+from app.view import request, render, redirect, flash
 from app.controller import User as controller
 
 user = Router('user')
@@ -18,6 +18,11 @@ def create():
     return redirect('/')
 user.route('/').POST = create
 
+def change():
+    instance = controller.current()
+    return redirect('/')
+user.route('/').PUT = change
+
 def destroy(uid):
     instance = controller.destroy(uid)
     return redirect('/')
@@ -32,10 +37,11 @@ def login():
         password = request.form.get('password')
         instance = controller.login(studentid, password)
 
-        # no user registered
         if not instance:
-            pass
-
+            flash('Not registered!')
+            flash('Not registered!')
+            flash('Not registered!')
+            return render('login.html')
         return redirect('/')
 
 @app.route('/logout/', methods=['POST'])
