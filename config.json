@@ -2,9 +2,10 @@
     "DB": {
         "server": "localhost",
         "user": "root",
-        "db": "test"
+        "db": "test",
+        "salt": "ScTckkSkYRuXi6O5"
     }, "APP": {
-        "secret_key": "20180814",
+        "secret_key": "oM6rGCxyqLxpyJpO",
         "upload_folder": "./temp/"
     }
 }
