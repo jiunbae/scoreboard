@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Column, Boolean, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.sql import func
 
 from app import Base
 
@@ -15,12 +16,14 @@ class Submission(Base):
     aid         = Column(Integer, ForeignKey('assignment.id'))
     uid         = Column(Integer, ForeignKey('user.id'))
 
-    scoring     = Column(Boolean, default=False)
+    state       = Column(String(16), default='submit')
     score       = Column(Float, default=.0)
     result      = Column(String(128), default='')
 
     user        = relationship("User", backref=backref('submission', order_by=id))
     assignment  = relationship("Assignment", backref=backref('submission', order_by=id))
+
+    time_created= Column(DateTime(timezone=True), server_default=func.now())
 
     def __init__(self, desc, file, aid, uid):
         self.desc = desc

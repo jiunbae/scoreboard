@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, Text, DateTime
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from app import Base
 
@@ -16,6 +17,9 @@ class Assignment(Base):
     start       = Column(DateTime)
     due         = Column(DateTime)
     submissions = relationship("Submission")
+
+    time_created= Column(DateTime(timezone=True), server_default=func.now())
+    time_updated= Column(DateTime(timezone=True), onupdate=func.now())
 
     def __init__(self, title, content, cate, start, due):
         self.title = title
