@@ -10,7 +10,7 @@ from app.controller import Assignment
 assignment = Router('assignment')
 
 def index():
-    return render('assignments.html', assignments=Assignment.index())
+    return render('assignments.html', assignments=reversed(Assignment.index()))
 assignment.route('/').GET = index
 
 def create():

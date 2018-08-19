@@ -6,6 +6,10 @@ from app.controller import Submission as controller
 
 submission = Router('submission')
 
+def show(sid):
+    return render('submission.html', submission=controller.show(sid))
+submission.route('/<sid>').GET = show
+
 def create():
     instance = controller.create(request.get_json())
     return redirect('/')

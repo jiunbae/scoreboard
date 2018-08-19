@@ -19,8 +19,9 @@ def create():
 user.route('/').POST = create
 
 def change():
-    instance = controller.current()
-    return redirect('/')
+    if not controller.update(request.get_json()):
+        flash('Password not matched')
+    return render('login.html')
 user.route('/').PUT = change
 
 def destroy(uid):
@@ -36,9 +37,8 @@ def login():
         studentid = request.form.get('studentid')
         password = request.form.get('password')
         instance = controller.login(studentid, password)
-
         if not instance:
-            flash('Not registered!')
+            flash('Not registered or password not matched!')
             return render('login.html')
         return redirect('/')
 
