@@ -39,8 +39,6 @@ def login():
 
         if not instance:
             flash('Not registered!')
-            flash('Not registered!')
-            flash('Not registered!')
             return render('login.html')
         return redirect('/')
 
