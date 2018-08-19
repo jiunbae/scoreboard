@@ -59,12 +59,23 @@ nav.navbar .nav-link.nav-icon {
     width: 768px;
 }
 
+#flash .alert {
+    margin-bottom: 0px;
+}
+
+#flash ul {
+    margin-bottom: 0px;
+}
+
 #flash ul li {
-    list-style-type: none
+    list-style-type: none;
+    padding: 8px 0;
+    font-size: 18px;
 }
 
 #wrapper {
     margin: 0 auto;
+    padding: 16px;
     width: 768px;
 }
 
