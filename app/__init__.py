@@ -18,8 +18,9 @@ app.secret_key = conf['APP']['secret_key']
 app.config['UPLOAD_FOLDER'] = conf['APP']['upload_folder']
 
 # db
-Engine      = create_engine('mysql+pymysql://{}@{}/{}?charset=utf8'.format(
+Engine      = create_engine('mysql+pymysql://{}:{}@{}/{}?charset=utf8'.format(
                             conf['DB']['user'],
+                            conf['DB']['pass'],
                             conf['DB']['server'],
                             conf['DB']['db']), convert_unicode=True)
 Session     = scoped_session(sessionmaker(autocommit=False,
