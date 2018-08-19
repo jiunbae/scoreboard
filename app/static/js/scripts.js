@@ -14,4 +14,9 @@ $(document).ready(function(){
         window.location.replace("/");
      });
   });
+
+  $('#change').click((e) => {
+    // request to user as put method
+    // change password to new one
+  };
 });
