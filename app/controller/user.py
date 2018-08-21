@@ -8,6 +8,7 @@ from app import Session
 from app import login_manager
 from app.controller import Controller
 from app.models import User as user
+from app.models import Submission as submission
 
 class User(Controller):
     model = user
@@ -44,7 +45,6 @@ class User(Controller):
         instance = cls.current()
         if instance.assert_password(pw):
             instance.set_safe_password(pw)
-            Session.add(instance)
             Session.commit()
             return instance
         return None
@@ -57,6 +57,15 @@ class User(Controller):
             asserted = instance.assert_permission()
             return func(*args, **kwargs)
         return wrapper
+
+    @classmethod
+    @login_required
+    def submissions(cls):
+        instance = cls.current()
+        return Controller.package(Session.query(submission)\
+                                         .filter(submission.aid == instance.id)
+                                         .order_by(submission.id.desc())\
+                                         .all())
 
 @login_manager.user_loader
 def load_user(uid):

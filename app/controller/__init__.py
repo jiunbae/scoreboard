@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from app import Base
 from app import Session
@@ -7,8 +7,13 @@ class Controller:
     model = None
 
     @classmethod
-    def index(cls):
-        return [instance.__dict__ for instance in Session.query(cls.model).all()]
+    def index(cls, sort_by: Base = None, reverse: bool = True):
+        if not sort_by:
+            return Controller.package(Session.query(cls.model).all())
+        order = (getattr(sort_by, 'desc') if reverse else getattr(sort_by, 'asc'))
+        return Controller.package(Session.query(cls.model)\
+                                         .order_by(order())\
+                                         .all())
 
     @classmethod
     def create(cls, data: dict) -> Optional[Base]:
@@ -36,6 +41,10 @@ class Controller:
             return instance
         except:
             return None
+
+    @staticmethod
+    def package(result: List) -> List[dict]:
+        return [r.__dict__ for r in result]
 
 import glob
 from os.path import dirname, basename, isfile
