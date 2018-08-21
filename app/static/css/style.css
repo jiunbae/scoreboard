@@ -27,6 +27,17 @@ body {
     text-rendering: optimizeLegibility;
 }
 
+pre {
+    overflow: auto;
+    word-break: normal;
+    word-wrap: normal;
+}
+
+.gj-datepicker {
+    padding: 0 8px;
+    display: inline-flex;
+}
+
 nav.navbar {
     height: 60px;
     font-size: 24px;
@@ -51,6 +62,10 @@ nav.navbar .nav-link {
 
 nav.navbar .nav-link.nav-icon {
     font-size: 28px;
+}
+
+.admin-panel {
+    margin-bottom: 16px;
 }
 
 #flash {
@@ -106,22 +121,23 @@ form.info-box {
 
 .assignment {
 }
-.assignment .content {
-    margin-top: 24px;
-    font-size: 18px;
-    line-height: 1.4em;
+.assignment .pdf-viewer {
+    width: 766px;
+    height: 500px;
+    margin-top: 15px;
+    margin-left: -15px;
 }
 
 .upload ul li {
     margin-top: 4px;
 }
-.upload .upload-label {
+.upload-label {
     width: 100%;
-    height: 38px;
+    height: 40px;
     font-size: 16px;
+    margin-bottom: 0px;
 }
 .submit input {
     width: 100%;
-    height: 38px;
     font-size: 16px;
 }
