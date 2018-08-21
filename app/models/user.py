@@ -1,9 +1,11 @@
-from app import Base
+from uuid import uuid4
 
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
+
+from app import Base
 
 class User(Base, UserMixin):
     __tablename__ = 'user'
@@ -12,7 +14,7 @@ class User(Base, UserMixin):
     id          = Column(Integer, primary_key=True, unique=True)
     studentid   = Column(String(12), unique=True)
     password    = Column(String(96))
-    TA          = Column(Boolean)
+    TA          = Column(Boolean, default=False)
     submissions = relationship("Submission")
 
     def __init__(self, studentid, password):
@@ -27,3 +29,6 @@ class User(Base, UserMixin):
 
     def assert_password(self, password: str) -> bool:
         return check_password_hash(self.password, password)
+
+    def assert_permission(self) -> bool:
+        return self.TA

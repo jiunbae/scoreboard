@@ -5,14 +5,17 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app import Base
+from app.lib.metric import Metric
 
 class Assignment(Base):
     __tablename__ = 'assignment'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
+    categories  = Metric.all()
 
     id          = Column(Integer, primary_key=True, unique=True)
     title       = Column(String(64))
-    content     = Column(Text)
+    file        = Column(String(128))
+    label       = Column(String(128))
     cate        = Column(Integer)
     start       = Column(DateTime)
     due         = Column(DateTime)
@@ -21,12 +24,15 @@ class Assignment(Base):
     time_created= Column(DateTime(timezone=True), server_default=func.now())
     time_updated= Column(DateTime(timezone=True), onupdate=func.now())
 
-    def __init__(self, title, content, cate, start, due):
+    def __init__(self, title, file, label, cate, start, due):
+        if cate not in Assignment.categories:
+            raise Exception("Wrong type")
         self.title = title
-        self.content = content
-        self.cate = cate
+        self.file = file
+        self.label = label
+        self.cate = Assignment.categories.index(cate)
         self.start = start
         self.due = due
 
     def __repr__(self) -> str:
-        return ','.join(map(str, [self.id, self.title, self.content, self.cate, self.start, self.due]))
+        return ','.join(map(str, [self.id, self.title, self.file, self.cate, self.start, self.due]))
