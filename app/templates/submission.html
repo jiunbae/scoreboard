@@ -7,10 +7,8 @@
             from<time datetime="{{ assignment.start }}">{{ assignment.start }}</time>
             to<time datetime="{{ assignment.due }}">{{ assignment.due }}</time>
         </div>
-
-        <object class="pdf-viewer" data="{{ file }}" type="application/pdf">
-          <p>Alternative text - include a link <a href="{{ file }}">to the PDF!</a></p>
-        </object>
+        
+        <p class="content">{{ assignment.content }}</p>
     </div>
     <hr>
     <form id="submission" method="POST" enctype="multipart/form-data">
@@ -40,6 +38,4 @@
             </div>
         </div>
     </form>
-    <hr>
-    {% include "ranking.html" %}
 {% endblock %}
