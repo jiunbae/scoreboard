@@ -4,13 +4,14 @@ from app import app
 from app.view import Router
 from app.view import request, render, redirect, flash
 from app.controller import User as controller
+from app.controller import Submission
 
 user = Router('user')
 
 @login_required
 def profile():
     instance = controller.current()
-    return render('user.html', submissions=instance.submissions)
+    return render('user.html', submissions=controller.submissions())
 user.route('/').GET = profile
 
 def create():

@@ -12,7 +12,9 @@ from app.controller import Assignment
 assignment = Router('assignment')
 
 def index():
-    return render('assignments.html', assignments=reversed(Assignment.index()), categories=model.categories)
+    return render('assignments.html',
+                  assignments=Assignment.index(model.id, True),
+                  categories=model.categories)
 assignment.route('/').GET = index
 
 @User.permission_required

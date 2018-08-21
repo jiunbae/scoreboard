@@ -1,7 +1,6 @@
-from flask import request, render_template, redirect, url_for
-
 from app import app
 from app.view import Router
+from app.view import request, render, redirect, flash
 from app.controller import Submission as controller
 
 submission = Router('submission')
