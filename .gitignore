@@ -1,6 +1,7 @@
 # Configure json
 config.json
 temp/
+assignments/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
