@@ -17,9 +17,10 @@ class User(Base, UserMixin):
     TA          = Column(Boolean, default=False)
     submissions = relationship("Submission")
 
-    def __init__(self, studentid, password):
+    def __init__(self, studentid, password, TA):
         self.studentid = studentid
         self.set_safe_password(password)
+        self.TA = TA
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.studentid, self.password]))
