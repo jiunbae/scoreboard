@@ -1,9 +1,9 @@
 {% extends "index.html" %}
 
 {% block body %}
-
-  {% include "assignment_create.html" %}
-
+  {% if user.TA %}
+    {% include "assignment_create.html" %}
+  {% endif %}
   <table id="assignments" class="table table-hover">
     <thead>
       <tr>
