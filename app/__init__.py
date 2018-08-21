@@ -16,6 +16,7 @@ login_manager.login_view = "login"
 # app config
 app.secret_key = conf['APP']['secret_key']
 app.config['UPLOAD_FOLDER'] = conf['APP']['upload_folder']
+app.config['ASSIGNMENT_FOLDER'] = conf['APP']['assignment_folder']
 
 # db
 Engine      = create_engine('mysql+pymysql://{}:{}@{}/{}?charset=utf8'.format(
@@ -29,6 +30,7 @@ Session     = scoped_session(sessionmaker(autocommit=False,
 Base        = declarative_base()
 Base.query  = Session.query_property()
 
+from app.lib.handler import Handler
 from app.models import *
 from app.view import *
 
