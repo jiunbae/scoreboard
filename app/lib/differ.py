@@ -1,30 +1,23 @@
-class Metric:
-    pass
-
-class Classification(Metric):
-    @staticmethod
-    def clac(tar, obj):
-        return sum(all(trow.values[1:].argmax()+1 == orow.values[1:])
-                    for (_, trow), (_, orow) in zip(tar.iterrows(), obj.iterrows()))
-
-class MIOU(Metric):
-    pass
-
-class MAP(Metric):
-    pass
-
 import numpy as np
 import pandas as pd
 
 class Differ:
-    def __init__(self, tar: str, obj: str, metric: Metric):
-        self.tar = Differ.read(tar, index=None)
-        self.obj = Differ.read(obj, index=None)
+    def __init__(self, tar: str, obj: str, metric):
+        self.tar = Differ.read(tar)
+        self.obj = Differ.read(obj)
+
+        tar_size = np.size(self.tar, 0)
+        obj_size = np.size(self.obj, 0)
+
+        if tar_size != obj_size:
+            raise Exception("instance number mismatach")
+
+        self.instances = tar_size
         self.metric = metric.calc
 
     @staticmethod
-    def read(file: str):
-        return pd.read_csv(file)
+    def read(file: str, index: bool = False) -> np.ndarray:
+        return pd.read_csv(file).values[:, 1:]
 
     def score(self) -> float:
-        return self.metric(self.tar, self.obj)
+        return self.metric(self.tar, self.obj) / self.instances
