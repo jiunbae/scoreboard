@@ -14,7 +14,10 @@ class User(Controller):
 
     @classmethod
     def current(cls) -> user:
-        return current_user if current_user.is_authenticated else None
+        try:
+            return current_user if current_user.is_authenticated else None
+        except:
+            return None
 
     @classmethod
     def login(cls, sid: int, pw: str) -> Optional[Base]:
@@ -36,17 +39,24 @@ class User(Controller):
         logout_user()
 
     @classmethod
+    @login_required
     def update(cls, pw: str) -> bool:
         instance = cls.current()
-        print (instance, pw)
         if instance.assert_password(pw):
-            print (instance.password)
             instance.set_safe_password(pw)
-            print (instance.password)
             Session.add(instance)
             Session.commit()
             return instance
         return None
+
+    @classmethod
+    def permission_required(cls, func):
+        @login_required
+        def wrapper(*args, **kwargs):
+            instance = cls.current()
+            asserted = instance.assert_permission()
+            return func(*args, **kwargs)
+        return wrapper
 
 @login_manager.user_loader
 def load_user(uid):
