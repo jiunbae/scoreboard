@@ -63,7 +63,7 @@ class User(Controller):
     def submissions(cls):
         instance = cls.current()
         return Controller.package(Session.query(submission)\
-                                         .filter(submission.aid == instance.id)
+                                         .filter(submission.uid == instance.id)
                                          .order_by(submission.id.desc())\
                                          .all())
 
