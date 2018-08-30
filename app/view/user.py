@@ -1,51 +1,54 @@
+from flask import jsonify
 from flask_login import login_required
 
 from app import app
 from app.view import Router
 from app.view import request, render, redirect, flash
-from app.controller import User as controller
+from app.controller import User
 from app.controller import Submission
 
 user = Router('user')
 
 @login_required
 def profile():
-    instance = controller.current()
-    return render('user.html', submissions=controller.submissions())
+    instance = User.current()
+    return render('user.html', submissions=User.submissions())
 user.route('/').GET = profile
 
 def create():
-    instance = controller.create(request.get_json())
-    return redirect('/')
+    instance = User.create(request.get_json())
+    return redirect(user)
 user.route('/').POST = create
 
 def change():
-    if not controller.update(request.get_json()):
-        flash('Password not matched')
-    return render('login.html')
+    response = {'status': 'ok'}
+    try:
+        User.update(**request.get_json())
+    except Exception as e:
+        response.update({'status': 'failed', 'error': str(e)})
+    return jsonify(response)
 user.route('/').PUT = change
 
 def destroy(uid):
-    instance = controller.destroy(uid)
-    return redirect('/')
+    instance = User.destroy(uid)
+    return redirect(user)
 user.route('/').DELETE = destroy
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render('login.html', user=controller.current())
+        return render('login.html', user=User.current())
     elif request.method == 'POST':
         studentid = request.form.get('studentid')
         password = request.form.get('password')
-        instance = controller.login(studentid, password)
+        instance = User.login(studentid, password)
         if not instance:
             flash('Not registered or password not matched!')
             return render('login.html')
-        return redirect('/')
+        return redirect(user)
 
 @app.route('/logout/', methods=['POST'])
 @login_required
 def logout():
-    if request.method == 'POST':
-        controller.logout()
-        return redirect('/')
+    User.logout()
+    return redirect(user)

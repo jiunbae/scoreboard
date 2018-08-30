@@ -40,7 +40,7 @@ class Router:
 # import submodule of view
 files = glob.glob(dirname(__file__) + "/*.py")
 __all__ = [basename(f).split('.')[0] for f in files if isfile(f) and not f.startswith('__')]
-from .assignment import assignment
+from .challenge import challenge
 from .submission import submission
 from .user import user, login, logout
 
