@@ -14,10 +14,10 @@ class Handler:
                         Submission.get_file_path(instance.file),
                         Assignment.get_file_path(instance.assignment.label),
                         str(instance.assignment.cate)],
-                        shell=True,
                         stdout=PIPE,
                         stderr=STDOUT)
         result, *_ = process.communicate()
+        print (result)
         instance.state = 'done'
         instance.result = 'done'
         instance.score = float(result.decode('utf-8'))
@@ -43,5 +43,4 @@ if __name__ == '__main__':
                         help="assignment category",
                         type=int)
     args = parser.parse_args()
-
     Handler.evaluate(args.filename, args.labelname, int(args.cate))
