@@ -15,8 +15,8 @@ login_manager.login_view = "login"
 
 # app config
 app.secret_key = conf['APP']['secret_key']
-app.config['UPLOAD_FOLDER'] = conf['APP']['upload_folder']
-app.config['ASSIGNMENT_FOLDER'] = conf['APP']['assignment_folder']
+app.config['SUBMISSION_FOLDER'] = conf['APP']['submission_folder']
+app.config['CHALLENGE_FOLDER'] = conf['APP']['challenge_folder']
 
 # db
 Engine      = create_engine('mysql+pymysql://{}:{}@{}/{}?charset=utf8'.format(

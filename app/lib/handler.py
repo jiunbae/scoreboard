@@ -1,5 +1,6 @@
 import argparse
 from subprocess import Popen, PIPE, STDOUT
+from os.path import join
 
 import numpy as np
 from numpy import apply_along_axis as npa
@@ -8,12 +9,12 @@ class Handler:
     @classmethod
     def scoring(cls, instance):
         from app import Session
-        from app.controller import Assignment
+        from app.controller import Challenge
         from app.controller import Submission
         process = Popen(['python', 'app/lib/handler.py',
-                        Submission.get_file_path(instance.file),
-                        Assignment.get_file_path(instance.assignment.label),
-                        str(instance.assignment.cate)],
+                        join(Submission.model.directory, instance.file),
+                        join(Challenge.model.directory, instance.challenge.label),
+                        str(instance.challenge.cate)],
                         stdout=PIPE,
                         stderr=STDOUT)
         result, *_ = process.communicate()
