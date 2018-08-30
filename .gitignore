@@ -1,7 +1,7 @@
 # Configure json
 config.json
-temp/
-assignments/
+submissions/
+challenges/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
