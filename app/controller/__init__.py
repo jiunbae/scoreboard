@@ -2,6 +2,7 @@ from typing import Optional, List
 
 from app import Base
 from app import Session
+from app.lib.file import File
 
 class Controller:
     model = None
@@ -21,9 +22,10 @@ class Controller:
             instance = cls.model(**data)
             Session.add(instance)
             Session.commit()
+
             return instance
-        except:
-            return None
+        except Exception as e:
+            raise Exception(e)
 
     @classmethod
     def show(cls, id: int) -> Optional[Base]:
@@ -42,6 +44,10 @@ class Controller:
         except:
             return None
 
+    @classmethod
+    def read_file(cls, filename: str, mode: str = 'r'):
+      return File(cls.model.directory, filename).read(mode)
+
     @staticmethod
     def package(result: List) -> List[dict]:
         return [r.__dict__ for r in result]
@@ -52,7 +58,7 @@ from os.path import dirname, basename, isfile
 files = glob.glob(dirname(__file__) + "/*.py")
 modules = map(basename, filter(lambda f: isfile(f) and not f.startswith('__'), files))
 __all__ = list(map(lambda f: f.split('.')[0], modules))
-from .assignment import Assignment
+from .challenge import Challenge
 from .submission import Submission
 from .user import User
 

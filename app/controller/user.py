@@ -41,13 +41,14 @@ class User(Controller):
 
     @classmethod
     @login_required
-    def update(cls, pw: str) -> bool:
+    def update(cls, old: str, new: str) -> bool:
         instance = cls.current()
-        if instance.assert_password(pw):
-            instance.set_safe_password(pw)
-            Session.commit()
-            return instance
-        return None
+        print(old, new)
+        if not instance.assert_password(old):
+            raise Exception('Password not matched')
+        instance.set_safe_password(new)
+        Session.commit()
+        return instance
 
     @classmethod
     def permission_required(cls, func):
