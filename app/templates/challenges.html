@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+
+{% block body %}
+  {% if user.TA %}
+    {% with text="New" %}
+      {% include "challenge_modal.html" %}
+    {% endwith %}
+  {% endif %}
+  <table id="challenges" class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Start</th>
+        <th scope="col">Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for challenge in challenges %}
+      <tr>
+        <th scope="row">{{ challenge.id }}</th>
+        <td><a href="/challenge/{{ challenge.id }}">{{ challenge.title }}</a></td>
+        <td>{{ challenge.start }}</td>
+        <td>{{ challenge.due }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

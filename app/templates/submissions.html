@@ -1,7 +1,7 @@
   <table id="submissions" class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">Assignment</th>
+        <th scope="col">Challenge</th>
         <th scope="col">Description</th>
         <th scope="col">State</th>
         <th scope="col">Score</th>
@@ -11,7 +11,7 @@
     <tbody>
       {% for submission in submissions %}
       <tr>
-        <td scope="row"><a href="/assignment/{{ submission.aid }}">{{ submission.aid }}</a></td>
+        <td scope="row"><a href="/challenge/{{ submission.cid }}">{{ submission.cid }}</a></td>
         <td><a href="/submission/{{ submission.id }}">{{ submission.desc }}</a></td>
         <td>{{ submission.state }}</td>
         <td>{{ submission.score }}</td>

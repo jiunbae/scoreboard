@@ -1,14 +1,14 @@
 {% extends "index.html" %}
 
 {% block body %}
-    <div class="container assignment">
-        <h2>{{ assignment.title }}</h2>
+    <div class="container challenge">
+        <h2>{{ challenge.title }}</h2>
         <div class="col-md-4 ml-auto">
-            from<time datetime="{{ assignment.start }}">{{ assignment.start }}</time>
-            to<time datetime="{{ assignment.due }}">{{ assignment.due }}</time>
+            from<time datetime="{{ challenge.start }}">{{ challenge.start }}</time>
+            to<time datetime="{{ challenge.due }}">{{ challenge.due }}</time>
         </div>
         
-        <p class="content">{{ assignment.content }}</p>
+        <p class="content">{{ challenge.content }}</p>
     </div>
     <hr>
     <form id="submission" method="POST" enctype="multipart/form-data">

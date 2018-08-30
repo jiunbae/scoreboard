@@ -4,6 +4,7 @@
         <th scope="col">Rank</th>
         <th scope="col">User</th>
         <th scope="col">Score</th>
+        <th scope="col">Time</th>
       </tr>
     </thead>
     <tbody>
@@ -12,6 +13,7 @@
         <td scope="row">{{ ranking.rank }}</td>
         <td>{{ ranking.user }}</td>
         <td>{{ ranking.score }}</td>
+        <td>{{ ranking.time_created }}</td>
       </tr>
       {% endfor %}
     </tbody>

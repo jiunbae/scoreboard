@@ -1,0 +1,60 @@
+{% extends "index.html" %}
+
+{% block body %}
+  {% if user.TA %}
+    {% with text="Edit" %}
+      {% include "challenge_modal.html" %}
+    {% endwith %}
+  {% endif %}
+  <div class="container challenge">
+    <h2 id="challengeTitle">{{ challenge.title }}</h2>
+    <div class="col-md-4 ml-auto">
+      from<time id="challengeStart" datetime="{{ challenge.start }}">{{ challenge.start }}</time>
+      to<time id="challengeDue" datetime="{{ challenge.due }}">{{ challenge.due }}</time>
+    </div>
+
+    <object class="pdf-viewer" data="{{ desc }}" type="application/pdf">
+      <p>Alternative text - include a link <a href="{{ desc }}">to the PDF!</a></p>
+    </object>
+  </div>
+  <hr>
+  <div class="form-group row">
+    <label class="col-form-label">Download data</label>
+    <div class="col-md-2">
+      <a class="btn btn-outline-info btn-block" href="{{ train }}"><i class="fas fa-file-download"></i> Train</a>
+    </div>
+    <div class="col-md-2">
+      <a class="btn btn-outline-info btn-block" href="{{ test }}"><i class="fas fa-file-download"></i> Test</a>
+    </div>
+  </div>
+  <hr>
+  <form id="submission" method="POST" enctype="multipart/form-data">
+    <div class="container upload row">
+      <div class="col-9">
+        <ul class="form-group">
+          <li>Your submission should be in <strong>CSV</strong> format.</li>
+          <li>This file should have a <strong>header row</strong>.</li>
+          <li>This file should have a <strong>index column</strong>.</li>
+        </ul>
+      </div>
+      <div class="col-3">
+        <label class="btn btn-outline-primary upload-label">
+          <i class="fas fa-file-upload"></i> Upload<input type="file" name="file" id="upload" hidden>
+        </label>
+      </div>
+    </div>
+    <div class="container submit row">
+      <div class="input-group mb-3 col-9">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Describe submission</span>
+        </div>
+        <input type="text" class="form-control" name="description" aria-label="Submission-Title" placeholder="description">
+      </div>
+      <div class="col-3">
+        <input type="submit" class="btn btn-outline-success" name="submit" value="Submit">
+      </div>
+    </div>
+  </form>
+  <hr>
+  {% include "ranking.html" %}
+{% endblock %}
