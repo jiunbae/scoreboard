@@ -4,16 +4,19 @@ from sqlalchemy import Column, Boolean, Integer, String, Float, DateTime, Foreig
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql import func
 
+from app import app
 from app import Base
+from app.lib.file import File
 
 class Submission(Base):
     __tablename__ = 'submission'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
+    directory   = app.config['SUBMISSION_FOLDER']
 
     id          = Column(Integer, primary_key=True, unique=True)
     desc        = Column(String(128))
     file        = Column(String(128))
-    aid         = Column(Integer, ForeignKey('assignment.id'))
+    cid         = Column(Integer, ForeignKey('challenge.id'))
     uid         = Column(Integer, ForeignKey('user.id'))
 
     state       = Column(String(16), default='submit')
@@ -21,15 +24,15 @@ class Submission(Base):
     result      = Column(String(128), default='')
 
     user        = relationship("User", backref=backref('submission', order_by=id))
-    assignment  = relationship("Assignment", backref=backref('submission', order_by=id))
+    challenge  = relationship("Challenge", backref=backref('submission', order_by=id))
 
     time_created= Column(DateTime(timezone=True), server_default=func.now())
 
-    def __init__(self, desc, file, aid, uid):
+    def __init__(self, desc, file, cid, uid):
         self.desc = desc
-        self.file = file
-        self.aid = aid
+        self.cid = cid
         self.uid = uid
+        self.file = File(Submission.directory).write(file).name
 
     def __repr__(self) -> str:
-        return ','.join(map(str, [self.desc, self.file, self.aid, self.uid]))
+        return ','.join(map(str, [self.desc, self.file, self.cid, self.uid]))
