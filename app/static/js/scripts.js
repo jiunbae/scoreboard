@@ -1,4 +1,13 @@
 $(document).ready(function() {
+  // modal edit mode
+  $('#challengeModal').on('shown.bs.modal', () => {
+    var btn = $('button[data-target*="#challengeModal"]');
+    if (btn.data('mode') == 'Edit') {
+      $('input[name*="challengeTitle"]').val($('#challengeTitle').text());
+      // TODO: reload date, files
+    }
+  });
+
   // auto description
   $('#upload[type="file"]').change((e) => {
     var target = $('input[name*="description"]');
@@ -8,6 +17,27 @@ $(document).ready(function() {
     }
   });
 
+  // change password, singout
+  $('#change').click((e) => {
+    $.ajax({
+      url: '/user/',
+      dataType: 'json',
+      method: 'PUT',
+      headers: { "Content-Type": "application/json" },
+      data: JSON.stringify({
+        'old': $('input[name*="oldPassword"]').val(),
+        'new': $('input[name*="newPassword"]').val()
+      }), success: (r) => {
+        if (r.status == "ok") {
+          $('#signout').trigger('click');
+        } else {
+          var target = $('input[name*="oldPassword"]');
+          if (!target.hasClass('is-invalid'))
+            target.addClass('is-invalid');
+        }
+      }
+    });
+  });
   $('#signout').click((e) => {
     $.post("/logout/")
      .done((data) => {
@@ -15,14 +45,9 @@ $(document).ready(function() {
      });
   });
 
-  $('#change').click((e) => {
-    // request to user as put method
-    // change password to new one
-  });
-
   // dropdown
   $('.dropdown-menu a.dropdown-item').click(function() {
-    var type = $('input[name*="assignmentType"]');
+    var type = $('input[name*="challengeType"]');
     type.text($(this).text());
     type.val($(this).text());
   });
@@ -33,7 +58,6 @@ $(document).ready(function() {
     iconsLibrary: 'fontawesome',
     format: 'yyyy-mm-dd'
   });
-
   $('input[name*="date-to"]').datepicker({
     uiLibrary: 'bootstrap4',
     iconsLibrary: 'fontawesome',

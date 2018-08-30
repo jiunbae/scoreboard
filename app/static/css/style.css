@@ -94,11 +94,11 @@ nav.navbar .nav-link.nav-icon {
     width: 768px;
 }
 
-#assignments {
+#challenges {
     list-style-type: none;
 }
 
-#assignments a {
+#challenges a {
     color: inherit;
     text-decoration: inherit;
 }
@@ -119,9 +119,9 @@ form.info-box {
     padding-bottom: 0px;
 }
 
-.assignment {
+.challenge {
 }
-.assignment .pdf-viewer {
+.challenge .pdf-viewer {
     width: 736px;
     height: 500px;
     margin-top: 15px;
