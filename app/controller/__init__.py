@@ -28,8 +28,7 @@ class Controller:
             raise Exception(e)
 
     @classmethod
-    def show(cls, id: int, pack: bool = True) -> Optional[Base]:
-        print('show called', cls, id, pack)
+    def show(cls, id: int, pack: bool = False) -> Optional[Base]:
         try:
             result = Session.query(cls.model).get(id)
             return result if not pack else Controller.package(result)
@@ -45,10 +44,6 @@ class Controller:
             return instance
         except:
             return None
-
-    @classmethod
-    def read_file(cls, filename: str, mode: str = 'r'):
-      return File(cls.model.directory, filename).read(mode)
 
     @staticmethod
     def package(elements: Tuple[Base, List[Base]]) -> Tuple[dict, List[dict]]:

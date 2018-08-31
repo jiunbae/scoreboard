@@ -67,4 +67,4 @@ class User(Controller):
 
 @login_manager.user_loader
 def load_user(uid):
-    return User.show(uid, pack=False)
+    return User.show(uid)
