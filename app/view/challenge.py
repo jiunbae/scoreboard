@@ -1,4 +1,6 @@
 from os.path import join
+from functools import partial
+from datetime import datetime
 
 from flask import make_response, send_file
 from flask_login import login_required
@@ -14,7 +16,9 @@ challenge = Router('challenge')
 
 def index():
     return render('challenges.html',
-                  challenges=Challenge.index(Challenge.model.id, True),
+                  challenges=Challenge.formatter(Challenge.index(sort_by=Challenge.model.id, reverse=True),
+                                                 target=lambda k, v: isinstance(v, datetime),
+                                                 format=lambda v: str(v)[:10]),
                   categories=Challenge.model.categories)
 challenge.route('/').GET = index
 
@@ -52,7 +56,7 @@ def show(cid):
             return send_file(join('..', Challenge.model.directory, getattr(content, cate)),\
                             as_attachment=True, attachment_filename='{}.zip'.format(cate))
     return render('challenge.html', **{
-        'challenge': content,
+        'challenge': Challenge.formatter(content, lambda k, v: isinstance(v, datetime), lambda v: str(v)[:10]),
         'rankings': Challenge.get_rankings(cid),
         'desc': './{}?raw=description'.format(cid),
         'train': './{}?raw=train'.format(cid),

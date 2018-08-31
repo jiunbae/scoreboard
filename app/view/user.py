@@ -41,9 +41,10 @@ def login():
     elif request.method == 'POST':
         studentid = request.form.get('studentid')
         password = request.form.get('password')
-        instance = User.login(studentid, password)
-        if not instance:
-            flash('Not registered or password not matched!')
+        try:
+            instance = User.login(studentid, password)
+        except Exception as e:
+            flash(str(e))
             return render('login.html')
         return redirect(user)
 
