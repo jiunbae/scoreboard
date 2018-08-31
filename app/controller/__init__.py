@@ -1,4 +1,5 @@
-from typing import Optional, List
+from typing import Optional, List, Callable, Tuple
+from functools import partial
 
 from app import Base
 from app import Session
@@ -8,13 +9,12 @@ class Controller:
     model = None
 
     @classmethod
-    def index(cls, sort_by: Base = None, reverse: bool = True):
-        if not sort_by:
-            return Controller.package(Session.query(cls.model).all())
-        order = (getattr(sort_by, 'desc') if reverse else getattr(sort_by, 'asc'))
-        return Controller.package(Session.query(cls.model)\
-                                         .order_by(order())\
-                                         .all())
+    def index(cls, pack: bool = True, sort_by: Base = None, reverse: bool = True):
+        result = Session.query(cls.model)
+        if sort_by:
+            result = result.order_by((getattr(sort_by, 'desc') if reverse else getattr(sort_by, 'asc'))())
+        result = result.all()
+        return result if not pack else Controller.package(result)
 
     @classmethod
     def create(cls, data: dict) -> Optional[Base]:
@@ -28,9 +28,11 @@ class Controller:
             raise Exception(e)
 
     @classmethod
-    def show(cls, id: int) -> Optional[Base]:
+    def show(cls, id: int, pack: bool = True) -> Optional[Base]:
+        print('show called', cls, id, pack)
         try:
-            return Session.query(cls.model).get(id)
+            result = Session.query(cls.model).get(id)
+            return result if not pack else Controller.package(result)
         except:
             return None
 
@@ -49,8 +51,18 @@ class Controller:
       return File(cls.model.directory, filename).read(mode)
 
     @staticmethod
-    def package(result: List) -> List[dict]:
-        return [r.__dict__ for r in result]
+    def package(elements: Tuple[Base, List[Base]]) -> Tuple[dict, List[dict]]:
+        if isinstance(elements, list):
+            return list(map(Controller.package, elements))
+        return elements.__dict__
+
+    @staticmethod
+    def formatter(elements: Tuple[dict, List[dict]],\
+                  target: Callable = lambda k, v: True,\
+                  format: Callable = lambda v: v) -> Tuple[dict, List[dict]]:
+        if isinstance(elements, list):
+            return list(map(partial(Controller.formatter, target=target, format=format), elements))
+        return {k: (format(v) if target(k, v) else v) for k, v in elements.items()}
 
 import glob
 from os.path import dirname, basename, isfile

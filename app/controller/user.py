@@ -28,11 +28,9 @@ class User(Controller):
                 login_user(instance)
                 return instance
             else:
-                # case password not matched
-                return None
+                raise Exception('Password not match!')
         except:
-            # case not registered
-            return None
+            raise Exception('Not registered!')
 
     @classmethod
     @login_required
@@ -43,7 +41,6 @@ class User(Controller):
     @login_required
     def update(cls, old: str, new: str) -> bool:
         instance = cls.current()
-        print(old, new)
         if not instance.assert_password(old):
             raise Exception('Password not matched')
         instance.set_safe_password(new)
@@ -70,4 +67,4 @@ class User(Controller):
 
 @login_manager.user_loader
 def load_user(uid):
-    return User.show(uid)
+    return User.show(uid, pack=False)
