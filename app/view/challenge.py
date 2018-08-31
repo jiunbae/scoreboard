@@ -1,11 +1,11 @@
 from os.path import join
-from functools import partial
 from datetime import datetime
 
 from flask import make_response, send_file
 from flask_login import login_required
 
 from app import app
+from app.lib.file import File
 from app.view import Router
 from app.view import request, render, redirect, flash
 from app.controller import User
@@ -48,15 +48,18 @@ def show(cid):
     if 'raw' in request.args:
         cate = request.args.get('raw')
         if cate == 'description':
-            response = make_response(Challenge.read_file(content.desc, 'rb'))
+            response = make_response(File(Challenge.model.directory, content.desc).read('rb'))
             response.headers['Content-Type'] = 'application/pdf'
             response.headers['Content-Disposition'] = 'inline; filename=%s.pdf'%content.desc
             return response
         else:
-            return send_file(join('..', Challenge.model.directory, getattr(content, cate)),\
-                            as_attachment=True, attachment_filename='{}.zip'.format(cate))
+            file = File(Challenge.model.directory, getattr(content, cate))
+            return send_file(join('..', str(file)),\
+                             as_attachment=True, attachment_filename='{}.{}'.format(cate, file.ext))
     return render('challenge.html', **{
-        'challenge': Challenge.formatter(content, lambda k, v: isinstance(v, datetime), lambda v: str(v)[:10]),
+        'challenge': Challenge.formatter(Challenge.package(content),
+                                         target=lambda k, v: isinstance(v, datetime),
+                                         format=lambda v: str(v)[:10]),
         'rankings': Challenge.get_rankings(cid),
         'desc': './{}?raw=description'.format(cid),
         'train': './{}?raw=train'.format(cid),
@@ -66,12 +69,15 @@ challenge.route('/<cid>').GET = show
 
 @login_required
 def submit(cid):
-    instance = Submission.create({
-        'desc': request.form.get('description'),
-        'file': request.files.get('file'),
-        'cid': Challenge.show(cid).id,
-        'uid': User.current().id,
-    })
+    try:
+        instance = Submission.create({
+            'desc': request.form.get('description'),
+            'file': request.files.get('file'),
+            'cid': Challenge.show(cid).id,
+            'uid': User.current().id,
+        })
+    except Exception as e:
+        flash(str(e))
     return redirect(challenge)
 challenge.route('/<cid>').POST = submit
 

@@ -5,23 +5,27 @@ from os.path import join
 import numpy as np
 from numpy import apply_along_axis as npa
 
+
 class Handler:
     @classmethod
     def scoring(cls, instance):
         from app import Session
+        from app.lib.file import File
         from app.controller import Challenge
         from app.controller import Submission
         process = Popen(['python', 'app/lib/handler.py',
-                        join(Submission.model.directory, instance.file),
-                        join(Challenge.model.directory, instance.challenge.label),
+                        str(File(Submission.model.directory, instance.file)),
+                        str(File(Challenge.model.directory, instance.challenge.label)),
                         str(instance.challenge.cate)],
                         stdout=PIPE,
                         stderr=STDOUT)
         result, *_ = process.communicate()
-        print (result)
+        try:
+            instance.score = float(result.decode('utf-8'))
+            instance.result = 'done'
+        except Exception as e:
+            instance.result = str(e)
         instance.state = 'done'
-        instance.result = 'done'
-        instance.score = float(result.decode('utf-8'))
         Session.commit()
 
     @classmethod

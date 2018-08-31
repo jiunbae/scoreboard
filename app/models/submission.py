@@ -29,6 +29,8 @@ class Submission(Base):
     time_created= Column(DateTime(timezone=True), server_default=func.now())
 
     def __init__(self, desc, file, cid, uid):
+        if not file:
+            raise Exception('The file must be included.')
         self.desc = desc
         self.cid = cid
         self.uid = uid
