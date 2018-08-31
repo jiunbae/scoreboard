@@ -1,4 +1,8 @@
-from app import app
+import json
+
+from app import create_app
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', threaded=True, debug=True)
+    with open('config.json') as f:
+        app = create_app(json.load(f))
+    app.run(**app.config["RUN"])
