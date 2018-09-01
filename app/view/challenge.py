@@ -2,7 +2,6 @@ from os.path import join
 from datetime import datetime
 
 from flask import make_response, send_file
-from flask_login import login_required
 
 from app import app
 from app.lib.file import File
@@ -22,23 +21,23 @@ def index():
                   categories=Challenge.model.categories)
 challenge.route('/').GET = index
 
-@User.permission_required
+@User.require_permission
 def create():
-    try:
-        instance = Challenge.create({
-            'title': request.form.get('challengeTitle'),
-            'cate': request.form.get('challengeType'),
-            'start': request.form.get('date-from'),
-            'due': request.form.get('date-to'),
-            'desc': request.files.get('desc'),
-            'label': request.files.get('label'),
-            'train': request.files.get('train'),
-            'test': request.files.get('test'),
-        })
-    except Exception as e:
-        flash(str(e))
-    finally:
-        return redirect(challenge)
+    # try:
+    instance = Challenge.create({
+        'title': request.form.get('challengeTitle'),
+        'cate': request.form.get('challengeType'),
+        'start': request.form.get('date-from'),
+        'due': request.form.get('date-to'),
+        'desc': request.files.get('desc'),
+        'label': request.files.get('label'),
+        'train': request.files.get('train'),
+        'test': request.files.get('test'),
+    })
+    # except Exception as e:
+    #     flash(str(e))
+    # finally:
+    return redirect(challenge)
 challenge.route('/').POST = create
 
 def show(cid):
@@ -67,7 +66,7 @@ def show(cid):
     })
 challenge.route('/<cid>').GET = show
 
-@login_required
+@User.require_login
 def submit(cid):
     try:
         instance = Submission.create({

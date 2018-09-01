@@ -1,10 +1,9 @@
-import glob
-from os.path import dirname, basename, isfile
-
-files = glob.glob(dirname(__file__) + "/*.py")
-modules = filter(lambda f: not f.startswith('__'), map(basename, filter(isfile, files)))
-__all__ = list(map(lambda f: f.split('.')[0], modules))
-
 from app import Base
 from app.lib.moduletools import import_subclass
-__all__ = list(import_subclass(__path__, Base, locals()))
+__all__ = list(map(lambda x: x.__name__, import_subclass(__path__, Base, locals())))
+
+# from app.models.challenge import Challenge
+# from app.models.post import Post
+# from app.models.submission import Submission
+# from app.models.user import User
+# from app.models.reply import Reply

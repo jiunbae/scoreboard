@@ -6,22 +6,21 @@ from flask_login import current_user
 from app import Base
 from app import Session
 from app import login_manager
+from app import models
 from app.controller import Controller
-from app.models import User as user
-from app.models import Submission as submission
 
 class User(Controller):
-    model = user
+    model = models.User
 
     @classmethod
-    def current(cls) -> user:
+    def current(cls) -> models.User:
         try:
             return current_user if current_user.is_authenticated else None
         except:
             return None
 
     @classmethod
-    def login(cls, sid: int, pw: str) -> Optional[Base]:
+    def login(cls, sid: int, pw: str) -> Optional[models.User]:
         try:
             instance = cls.model.query.filter_by(studentid=sid).one()
             if instance.assert_password(pw):
@@ -48,7 +47,7 @@ class User(Controller):
         return instance
 
     @classmethod
-    def permission_required(cls, func):
+    def require_permission(cls, func):
         @login_required
         def wrapper(*args, **kwargs):
             instance = cls.current()
@@ -57,12 +56,20 @@ class User(Controller):
         return wrapper
 
     @classmethod
+    def require_login(cls, func):
+        @login_required
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        return wrapper
+
+    # attributes
+    @classmethod
     @login_required
     def submissions(cls):
         instance = cls.current()
-        return Controller.package(Session.query(submission)\
-                                         .filter(submission.uid == instance.id)
-                                         .order_by(submission.id.desc())\
+        return Controller.package(Session.query(models.Submission)\
+                                         .filter(models.Submission.uid == instance.id)
+                                         .order_by(models.Submission.id.desc())\
                                          .all())
 
 @login_manager.user_loader

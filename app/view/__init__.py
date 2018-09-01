@@ -38,7 +38,12 @@ class Router:
         return self.attr
 
 from app.lib.moduletools import import_subclass
-__all__ = list(import_subclass(__path__, Router, locals()))
+__all__ = list(map(lambda x: x.__name__, import_subclass(__path__, Router, locals())))
+
+# from app.view.challenge import challenge
+# from app.view.notice import notice
+# from app.view.submission import submission
+# from app.view.user import user
 
 for route, router in Router.routers:
     for url, handler in router.items():

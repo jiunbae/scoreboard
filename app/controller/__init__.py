@@ -1,4 +1,4 @@
-from typing import Optional, List, Callable, Tuple
+from typing import Optional, List, Callable, Tuple, Any
 from functools import partial
 
 from app import Base
@@ -9,28 +9,34 @@ class Controller:
     model = None
 
     @classmethod
-    def index(cls, pack: bool = True, sort_by: Base = None, reverse: bool = True):
-        result = Session.query(cls.model)
+    def index(cls,
+              filter_by: dict = None,
+              sort_by: Base = None,
+              reverse: bool = True,
+              pack: bool = True) -> List[Base]:
+        result = cls.model.query
+        if filter_by:
+            result = result.filter_by(**filter_by)
         if sort_by:
-            result = result.order_by((getattr(sort_by, 'desc') if reverse else getattr(sort_by, 'asc'))())
+            result = result.order_by((getattr(sort_by, 'desc' if reverse else 'asc'))())
         result = result.all()
         return result if not pack else Controller.package(result)
 
     @classmethod
     def create(cls, data: dict) -> Optional[Base]:
-        try:
-            instance = cls.model(**data)
-            Session.add(instance)
-            Session.commit()
+        # try:
+        instance = cls.model(**data)
+        Session.add(instance)
+        Session.commit()
 
-            return instance
-        except Exception as e:
-            raise Exception(e)
+        return instance
+        # except Exception as e:
+        #     raise Exception(e)
 
     @classmethod
-    def show(cls, id: int, pack: bool = False) -> Optional[Base]:
+    def show(cls, id:int, pack: bool = False) -> Optional[Base]:
         try:
-            result = Session.query(cls.model).get(id)
+            result = cls.model.query.get(id)
             return result if not pack else Controller.package(result)
         except:
             return None
@@ -60,7 +66,12 @@ class Controller:
         return {k: (format(v) if target(k, v) else v) for k, v in elements.items()}
 
 from app.lib.moduletools import import_subclass
-__all__ = list(import_subclass(__path__, Controller, locals()))
+__all__ = list(map(lambda x: x.__name__, import_subclass(__path__, Controller, locals())))
+
+# from app.controller.challenge import Challenge
+# from app.controller.post import Post
+# from app.controller.submission import Submission
+# from app.controller.user import User
 
 def default_params():
     return {'user': User.current()}

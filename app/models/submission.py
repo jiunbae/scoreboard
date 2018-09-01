@@ -24,7 +24,7 @@ class Submission(Base):
     result      = Column(String(128), default='')
 
     user        = relationship("User", backref=backref('submission', order_by=id))
-    challenge  = relationship("Challenge", backref=backref('submission', order_by=id))
+    challenge   = relationship("Challenge", backref=backref('submission', order_by=id))
 
     time_created= Column(DateTime(timezone=True), server_default=func.now())
 
@@ -34,7 +34,7 @@ class Submission(Base):
         self.desc = desc
         self.cid = cid
         self.uid = uid
-        self.file = File(Submission.directory).write(file).name
+        self.file = File(self.directory).write(file).name
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.desc, self.file, self.cid, self.uid]))

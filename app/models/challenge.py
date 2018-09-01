@@ -30,16 +30,16 @@ class Challenge(Base):
     time_updated= Column(DateTime(timezone=True), onupdate=func.now())
 
     def __init__(self, title, start, due, cate, desc, label, train='', test=''):
-        if cate not in Challenge.categories:
+        if cate not in self.categories:
             raise Exception("Wrong type")
         self.title = title
         self.start = start
         self.due = due
-        self.cate = Challenge.categories.index(cate)
-        self.desc = File(Challenge.directory).write(desc).name
-        self.label = File(Challenge.directory).write(label).name
-        self.train = File(Challenge.directory).write(train).name
-        self.test = File(Challenge.directory).write(test).name
+        self.cate = self.categories.index(cate)
+        self.desc = File(self.directory).write(desc).name
+        self.label = File(self.directory).write(label).name
+        self.train = train and File(self.directory).write(train).name
+        self.test = test and File(self.directory).write(test).name
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.id, self.title, self.desc, self.cate, self.start, self.due]))

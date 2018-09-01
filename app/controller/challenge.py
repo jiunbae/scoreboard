@@ -1,20 +1,21 @@
+from typing import List
+
 from sqlalchemy import and_
 
 from app import Session
+from app import models
 from app.controller import Controller
-from app.models import Challenge as challenge
-from app.models import Submission as submission
 
 class Challenge(Controller):
-    model = challenge
+    model = models.Challenge
 
     @classmethod
-    def get_rankings(cls, cid: int):
-        submissions = Session.query(submission)\
-                             .filter(and_(submission.cid==cid,
-                                          submission.state=='done',
-                                          submission.result=='done'))\
-                             .order_by(submission.score.desc())\
+    def get_rankings(cls, cid: int) -> List[dict]:
+        submissions = Session.query(models.Submission)\
+                             .filter(and_(models.Submission.cid==cid,
+                                          models.Submission.state=='done',
+                                          models.Submission.result=='done'))\
+                             .order_by(models.Submission.score.desc())\
                              .all()
 
         return [{

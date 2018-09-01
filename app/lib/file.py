@@ -7,7 +7,6 @@ class File:
         self.dirname = dirname
         self.name = name or File.get_safe_file_name(dirname)
         self.ext = File.get_exist_ext(dirname, name) if name else ext
-        print (self.dirname, self.name, self.ext)
 
     def write(self, file):
         self.ext = file.filename.split('.')[-1]
