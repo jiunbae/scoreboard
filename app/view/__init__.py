@@ -37,12 +37,8 @@ class Router:
         self.url = url
         return self.attr
 
-# import submodule of view
-files = glob.glob(dirname(__file__) + "/*.py")
-__all__ = [basename(f).split('.')[0] for f in files if isfile(f) and not f.startswith('__')]
-from .challenge import challenge
-from .submission import submission
-from .user import user, login, logout
+from app.lib.moduletools import import_subclass
+__all__ = list(import_subclass(__path__, Router, locals()))
 
 for route, router in Router.routers:
     for url, handler in router.items():

@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app import app
-from app import Base
+from app.models import Base
 from app.lib.file import File
 from app.lib.metric import Metric
 

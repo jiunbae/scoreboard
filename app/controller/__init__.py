@@ -59,15 +59,8 @@ class Controller:
             return list(map(partial(Controller.formatter, target=target, format=format), elements))
         return {k: (format(v) if target(k, v) else v) for k, v in elements.items()}
 
-import glob
-from os.path import dirname, basename, isfile
-
-files = glob.glob(dirname(__file__) + "/*.py")
-modules = map(basename, filter(lambda f: isfile(f) and not f.startswith('__'), files))
-__all__ = list(map(lambda f: f.split('.')[0], modules))
-from .challenge import Challenge
-from .submission import Submission
-from .user import User
+from app.lib.moduletools import import_subclass
+__all__ = list(import_subclass(__path__, Controller, locals()))
 
 def default_params():
     return {'user': User.current()}

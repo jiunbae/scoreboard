@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 
-from app import Base
+from app.models import Base
 
 class User(Base, UserMixin):
     __tablename__ = 'user'

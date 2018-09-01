@@ -6,25 +6,24 @@ from sqlalchemy.sql import func
 
 from app.models import Base
 
-class Post(Base):
-    __tablename__ = 'post'
+class Reply(Base):
+    __tablename__ = 'reply'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     id          = Column(Integer, primary_key=True, unique=True)
-    title       = Column(String(128))
     content     = Column(Text)
-    notice      = Column(Boolean, default=False)
+    pid         = Column(Integer, ForeignKey('post.id'))
     uid         = Column(Integer, ForeignKey('user.id'))
 
-    user        = relationship("User", backref=backref('post', order_by=id))
+    post        = relationship("Post", backref=backref('reply', order_by=id))
+    user        = relationship("User", backref=backref('reply', order_by=id))
 
     time_created= Column(DateTime(timezone=True), server_default=func.now())
     time_updated= Column(DateTime(timezone=True), onupdate=func.now())
 
-    def __init__(self, title, content, notice, uid):
-        self.title = title
+    def __init__(self, content, pid, uid):
         self.content = content
-        self.notice = notice
+        self.pid = pid
         self.uid = uid
 
     def __repr__(self) -> str:
