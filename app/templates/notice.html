@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+
+{% block body %}
+  {% if user.TA %}
+    {% with text="New" %}
+      {% include "notice_modal.html" %}
+    {% endwith %}
+  {% endif %}
+  <table id="notices" class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Start</th>
+        <th scope="col">Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for notice in notices %}
+      <tr>
+        <th scope="row">{{ notice.id }}</th>
+        <td><a href="/notice/{{ notice.id }}">{{ notice.title }}</a></td>
+        <td>{{ notice.time_created }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
