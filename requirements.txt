@@ -4,3 +4,4 @@ sqlalchemy
 pymysql
 numpy
 pandas
+markdown

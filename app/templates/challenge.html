@@ -13,21 +13,27 @@
       to<time id="challengeDue" datetime="{{ challenge.due }}">{{ challenge.due }}</time>
     </div>
 
-    <object class="pdf-viewer" data="{{ desc }}" type="application/pdf">
-      <p>Alternative text - include a link <a href="{{ desc }}">to the PDF!</a></p>
+    <object class="pdf-viewer" data="./{{ challenge.id }}?raw=description" type="application/pdf">
+      <p>Alternative text - include a link <a href="./{{ challenge.id }}?raw=description">to the PDF!</a></p>
     </object>
   </div>
   <hr>
+  {% if train or test %}
   <div class="form-group row">
     <label class="col-form-label">Download data</label>
+    {% if train %}
     <div class="col-md-2">
-      <a class="btn btn-outline-info btn-block" href="{{ train }}"><i class="fas fa-file-download"></i> Train</a>
+      <a class="btn btn-outline-info btn-block" href="./{{ challenge.id }}?raw=train"><i class="fas fa-file-download"></i> Train</a>
     </div>
+    {% endif %}
+    {% if test %}
     <div class="col-md-2">
-      <a class="btn btn-outline-info btn-block" href="{{ test }}"><i class="fas fa-file-download"></i> Test</a>
+      <a class="btn btn-outline-info btn-block" href="./{{ challenge.id }}?raw=test"><i class="fas fa-file-download"></i> Test</a>
     </div>
+    {% endif %}
   </div>
   <hr>
+  {% endif %}
   <form id="submission" method="POST" enctype="multipart/form-data">
     <div class="container upload row">
       <div class="col-9">

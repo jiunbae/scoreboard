@@ -94,6 +94,11 @@ nav.navbar .nav-link.nav-icon {
     width: 768px;
 }
 
+#posts a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
 #challenges {
     list-style-type: none;
 }

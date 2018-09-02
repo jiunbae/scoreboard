@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+from markdown import markdown
+
 from app import Session
 from app import models
 from app.controller import Controller
@@ -12,3 +14,7 @@ class Post(Controller):
         if cate not in models.Post.categories:
             raise Exception('Wrong type')
         return super(Post, cls).index(filter_by={'cate': models.Post.categories.index(cate)}, *args, **kwargs)
+
+    @classmethod
+    def render_md(cls, content):
+        return markdown(content)

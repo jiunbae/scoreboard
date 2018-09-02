@@ -31,7 +31,7 @@ class Post(Base):
         self.title = title
         self.content = content
         self.uid = uid
-        self.notice = self.categories.index(cate)
+        self.cate = self.categories.index(cate)
 
     def __repr__(self) -> str:
-        return ','.join(map(str, [self.desc, self.file, self.aid, self.uid]))
+        return ','.join(map(str, [self.title, self.content, self.uid, self.cate]))

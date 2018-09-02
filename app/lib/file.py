@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import join
+from os.path import join, isfile
 from uuid import uuid4
 
 class File:
@@ -7,6 +7,9 @@ class File:
         self.dirname = dirname
         self.name = name or File.get_safe_file_name(dirname)
         self.ext = File.get_exist_ext(dirname, name) if name else ext
+
+    def is_exist(self):
+        return isfile(join(self.dirname, self.name))
 
     def write(self, file):
         self.ext = file.filename.split('.')[-1]

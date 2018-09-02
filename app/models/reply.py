@@ -27,4 +27,4 @@ class Reply(Base):
         self.uid = uid
 
     def __repr__(self) -> str:
-        return ','.join(map(str, [self.desc, self.file, self.aid, self.uid]))
+        return ','.join(map(str, [self.content, self.pid, self.uid]))

@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+
+{% block body %}
+  {% if user.TA %}
+    {% with text="New" %}
+      {% include "post_modal.html" %}
+    {% endwith %}
+  {% endif %}
+  <table id="posts" class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <th scope="row">{{ post.id }}</th>
+        <td><a href="/{{ uri }}/{{ post.id }}">{{ post.title }}</a></td>
+        <td>{{ post.user.studentid }}</a></td>
+        <td>{{ post.time_created }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

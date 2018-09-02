@@ -5,7 +5,7 @@ from collections import defaultdict
 from urllib.parse import urljoin
 from functools import partial 
 
-from flask import render_template, request, redirect, flash
+from flask import render_template, request, redirect, flash, Markup
 
 from app import app
 from app.lib.attrcallback import AttrCallback
