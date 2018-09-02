@@ -23,21 +23,23 @@ challenge.route('/').GET = index
 
 @User.require_permission
 def create():
-    # try:
-    instance = Challenge.create({
-        'title': request.form.get('challengeTitle'),
-        'cate': request.form.get('challengeType'),
-        'start': request.form.get('date-from'),
-        'due': request.form.get('date-to'),
-        'desc': request.files.get('desc'),
-        'label': request.files.get('label'),
-        'train': request.files.get('train'),
-        'test': request.files.get('test'),
-    })
-    # except Exception as e:
-    #     flash(str(e))
-    # finally:
-    return redirect(challenge)
+    try:
+        instance = Challenge.create({
+            'title': request.form.get('challengeTitle'),
+            'cate': request.form.get('challengeType'),
+            'start': request.form.get('date-from'),
+            'due': request.form.get('date-to'),
+            'desc': request.files.get('desc', ''),
+            'label': request.files.get('label', ''),
+            'train': request.files.get('train', ''),
+            'test': request.files.get('test', ''),
+        })
+        print (instance)
+        print (instance.train, instance.test)
+    except Exception as e:
+        flash(str(e))
+    finally:
+        return redirect(challenge)
 challenge.route('/').POST = create
 
 def show(cid):
@@ -55,14 +57,14 @@ def show(cid):
             file = File(Challenge.model.directory, getattr(content, cate))
             return send_file(join('..', str(file)),\
                              as_attachment=True, attachment_filename='{}.{}'.format(cate, file.ext))
+    content = Challenge.package(content)
     return render('challenge.html', **{
-        'challenge': Challenge.formatter(Challenge.package(content),
+        'challenge': Challenge.formatter(content,
                                          target=lambda k, v: isinstance(v, datetime),
                                          format=lambda v: str(v)[:10]),
         'rankings': Challenge.get_rankings(cid),
-        'desc': './{}?raw=description'.format(cid),
-        'train': './{}?raw=train'.format(cid),
-        'test': './{}?raw=test'.format(cid),
+        'train': content.get('train'),
+        'test': content.get('test'),
     })
 challenge.route('/<cid>').GET = show
 
