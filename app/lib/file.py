@@ -2,6 +2,8 @@ from os import listdir
 from os.path import join, isfile
 from uuid import uuid4
 
+import numpy as np
+
 class File:
     def __init__(self, dirname: str, name: str = '', ext: str = ''):
         self.dirname = dirname
@@ -22,6 +24,11 @@ class File:
 
     def __str__(self) -> str:
         return join(self.dirname, '{}.{}'.format(self.name, self.ext))
+
+    @staticmethod
+    def read_csv(filename: str, index: bool = False) -> np.ndarray:
+        csv = np.genfromtxt(filename, delimiter=',')[1:]
+        return csv[csv[:, 0].argsort()]
 
     @staticmethod
     def get_safe_file_name(dirname: str) -> str:

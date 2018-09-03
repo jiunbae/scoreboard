@@ -3,8 +3,6 @@ from subprocess import Popen, PIPE, STDOUT
 from os.path import join
 
 import numpy as np
-from numpy import apply_along_axis as npa
-
 
 class Handler:
     @classmethod
@@ -24,17 +22,24 @@ class Handler:
             instance.score = float(result.decode('utf-8'))
             instance.result = 'done'
         except Exception as e:
-            instance.result = str(e)
+            instance.result = result
         instance.state = 'done'
         Session.commit()
 
     @classmethod
-    def evaluate(cls, filename, labelname, cate):
-        from differ import Differ
+    def evaluate(cls, filename: str, labelname: str, cate: str) -> float:
         from metric import Metric
-        metric = Metric.__subclasses__()[cate]
-        differ = Differ(filename, labelname, metric)
-        print (differ.score())
+        from file import File
+
+        # TODO: assert index match
+        label = File.read_csv(labelname)
+        test = File.read_csv(filename)
+
+        if np.size(label, 0) != np.size(test, 0):
+            print ("Instance number mismatch")
+        else:
+            result = Metric.__subclasses__()[cate]()(label, test)
+            print (result)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
