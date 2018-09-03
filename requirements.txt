@@ -5,3 +5,4 @@ pymysql
 numpy
 pandas
 markdown
+sklearn
