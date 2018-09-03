@@ -6,7 +6,7 @@ from flask import make_response, send_file
 from app import app
 from app.lib.file import File
 from app.view import Router
-from app.view import request, render, redirect, flash
+from app.view import request, render, redirect, flash, jsonify
 from app.controller import User
 from app.controller import Submission
 from app.controller import Challenge
@@ -61,6 +61,7 @@ def show(cid):
                                          target=lambda k, v: isinstance(v, datetime),
                                          format=lambda v: str(v)[:10]),
         'rankings': Challenge.get_rankings(cid),
+        'rankrole': content.get('board_role', 0),
         'train': content.get('train'),
         'test': content.get('test'),
     })
@@ -79,6 +80,16 @@ def submit(cid):
         flash(str(e))
     return redirect(challenge)
 challenge.route('/<cid>').POST = submit
+
+@User.require_permission
+def update(cid):
+    response = {'status': 'ok'}
+    try:
+        Challenge.update(cid, request.get_json())
+    except Exception as e:
+        response.update({'status': 'failed', 'error': str(e)})
+    return jsonify(response)
+challenge.route('/<cid>').PUT = update
 
 def destroy(cid):
     instance = Challenge.delete(cid)

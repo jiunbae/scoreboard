@@ -24,6 +24,7 @@ class Challenge(Base):
     cate        = Column(Integer)
     start       = Column(DateTime)
     due         = Column(DateTime)
+    board_role  = Column(Integer)
     submissions = relationship("Submission")
 
     time_created= Column(DateTime(timezone=True), server_default=func.now())
@@ -35,6 +36,7 @@ class Challenge(Base):
         self.title = title
         self.start = start
         self.due = due
+        self.board_role = 0
         self.cate = self.categories.index(cate)
         self.desc = File(self.directory).write(desc).name
         self.label = File(self.directory).write(label).name
@@ -42,4 +44,4 @@ class Challenge(Base):
         self.test = test and File(self.directory).write(test).name
 
     def __repr__(self) -> str:
-        return ','.join(map(str, [self.id, self.title, self.desc, self.cate, self.start, self.due]))
+        return ','.join(map(str, [self.id, self.title, self.desc, self.cate, self.start, self.due, self.board_role]))
