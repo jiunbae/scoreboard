@@ -34,8 +34,6 @@ def create():
             'train': request.files.get('train', ''),
             'test': request.files.get('test', ''),
         })
-        print (instance)
-        print (instance.train, instance.test)
     except Exception as e:
         flash(str(e))
     finally:

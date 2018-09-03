@@ -2,6 +2,7 @@ from typing import Tuple
 
 import numpy as np 
 from numpy import apply_along_axis as npa
+from sklearn.metrics import average_precision_score
 
 class Metric:
     def __call__(self, tar: np.ndarray, obj: np.ndarray) -> float:
@@ -39,5 +40,10 @@ class mIOU(Metric):
 
 class mAP(Metric):
     def __call__(self, tar: np.ndarray, obj: np.ndarray) -> float:
-        result = 0
+        result = npa(mAP.precision, 1, np.column_stack((tar[:, 1:], obj[:, 1:]))).mean()
         return Metric.normalize(np.size(tar, 0), result)
+
+    @staticmethod
+    def precision(row):
+        (y_true, y_score) = row
+        return average_precision_score(y_true, y_score)
