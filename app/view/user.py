@@ -1,9 +1,8 @@
-from flask import jsonify
 from flask_login import login_required
 
 from app import app
 from app.view import Router
-from app.view import request, render, redirect, flash
+from app.view import request, render, redirect, flash, jsonify
 from app.controller import User
 from app.controller import Submission
 

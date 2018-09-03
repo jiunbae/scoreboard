@@ -38,7 +38,7 @@ class User(Controller):
 
     @classmethod
     @login_required
-    def update(cls, old: str, new: str) -> bool:
+    def update(cls, old: str, new: str) -> Base:
         instance = cls.current()
         if not instance.assert_password(old):
             raise Exception('Password not matched')
