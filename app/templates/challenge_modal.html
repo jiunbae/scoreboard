@@ -1,11 +1,6 @@
-  <!-- Admin Panel -->
-  <div class="row admin-panel">
-    <div class="col-md-2 offset-md-10">
-      <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#challengeModal" data-mode="{{ text }}">
-        {{ text }}
-      </button>
-    </div>
-  </div>
+  {% with type="challenge" %}
+    {% include "controller.html" %}
+  {% endwith %}
 
   <!-- Modal -->
   <div class="modal fade" id="challengeModal" tabindex="-1" role="dialog" aria-labelledby="challengeModal" aria-hidden="true">

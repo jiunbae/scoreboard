@@ -8,6 +8,47 @@ $(document).ready(function() {
     }
   });
 
+  // rank board attribute 
+  if ($('#rankboard').length) {
+    var role = $('#rankboard').data('rank-checkbox');
+    var boxes = $($('.rank-checkbox').get().reverse());
+
+    boxes.each((i, r) => {
+      let val = Math.pow(2, boxes.length - i - 1);
+      if (role >= val) {
+        role -= val;
+      } else {
+        $(r).prop('checked', 'true'); 
+      }
+    })
+  };
+
+  $('.rank-checkbox').change(function(e) {
+    var id = $('#rankboard').data('id');
+    var boxes = $('.rank-checkbox');
+    var val = boxes.index($(this)) * ($(this).is(':checked') ? -1 : 1);
+
+    $.ajax({
+      url: '/challenge/' + String(id),
+      dataType: 'json',
+      method: 'PUT',
+      headers: { "Content-Type": "application/json" },
+      data: JSON.stringify({
+        'board_role': val
+      }), success: (r) => {
+        if (r.status == "ok") {
+        } else {
+          console.log(r);
+          if (val < 0) {
+            $(this).prop('checked', 'true');
+          } else {
+            $(this).removeAttr('checked');
+          }
+        }
+      }
+    });
+  });
+
   // auto description
   $('#upload[type="file"]').change((e) => {
     var target = $('input[name*="description"]');
