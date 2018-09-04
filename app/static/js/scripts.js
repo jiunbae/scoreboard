@@ -1,3 +1,15 @@
+function updateRankBoard(role) {
+  var boxes = $($('.rank-checkbox').get().reverse());
+  boxes.each((i, r) => {
+    let val = Math.pow(2, boxes.length - i - 1);
+    if (role >= val) {
+      role -= val;
+    } else {
+      $(r).prop('checked', 'true');
+    }
+  });
+}
+
 $(document).ready(function() {
   // modal edit mode
   $('#challengeModal').on('shown.bs.modal', () => {
@@ -10,23 +22,12 @@ $(document).ready(function() {
 
   // rank board attribute 
   if ($('#rankboard').length) {
-    var role = $('#rankboard').data('rank-checkbox');
-    var boxes = $($('.rank-checkbox').get().reverse());
-
-    boxes.each((i, r) => {
-      let val = Math.pow(2, boxes.length - i - 1);
-      if (role >= val) {
-        role -= val;
-      } else {
-        $(r).prop('checked', 'true'); 
-      }
-    })
+    updateRankBoard($('#rankboard').data('rank-checkbox'));
   };
-
   $('.rank-checkbox').change(function(e) {
     var id = $('#rankboard').data('id');
     var boxes = $('.rank-checkbox');
-    var val = boxes.index($(this)) * ($(this).is(':checked') ? -1 : 1);
+    var val = (boxes.index($(this))+1) * ($(this).is(':checked') ? -1 : 1);
 
     $.ajax({
       url: '/challenge/' + String(id),
@@ -36,15 +37,7 @@ $(document).ready(function() {
       data: JSON.stringify({
         'board_role': val
       }), success: (r) => {
-        if (r.status == "ok") {
-        } else {
-          console.log(r);
-          if (val < 0) {
-            $(this).prop('checked', 'true');
-          } else {
-            $(this).removeAttr('checked');
-          }
-        }
+        updateRankBoard(r.board_role);
       }
     });
   });
