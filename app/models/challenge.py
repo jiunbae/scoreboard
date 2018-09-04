@@ -14,6 +14,7 @@ class Challenge(Base):
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
     directory   = app.config['CHALLENGE_FOLDER']
     categories  = Metric.all()
+    board_roles = ['rank', 'user', 'score', 'time']
 
     id          = Column(Integer, primary_key=True, unique=True)
     title       = Column(String(64))
@@ -42,6 +43,10 @@ class Challenge(Base):
         self.label = File(self.directory).write(label).name
         self.train = train and File(self.directory).write(train).name
         self.test = test and File(self.directory).write(test).name
+
+    def roler(self) -> dict:
+        role = bin(self.board_role)[2:].zfill(len(self.board_roles))[::-1]
+        return { name: role[i] == '0' for i, name in enumerate(self.board_roles)}
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.id, self.title, self.desc, self.cate, self.start, self.due, self.board_role]))

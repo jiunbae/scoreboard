@@ -88,7 +88,9 @@ def update(cid):
         Challenge.update(cid, request.get_json())
     except Exception as e:
         response.update({'status': 'failed', 'error': str(e)})
-    return jsonify(response)
+    finally:
+        response.update({'board_role': Challenge.show(cid).board_role})
+        return jsonify(response)
 challenge.route('/<cid>').PUT = update
 
 def destroy(cid):
