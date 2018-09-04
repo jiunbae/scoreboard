@@ -9,8 +9,10 @@ class Handler:
     def scoring(cls, instance):
         from app import Session
         from app.lib.file import File
+        from app.lib.metric import Metric
         from app.controller import Challenge
         from app.controller import Submission
+
         process = Popen(['python', 'app/lib/handler.py',
                         str(File(Submission.model.directory, instance.file)),
                         str(File(Challenge.model.directory, instance.challenge.label)),
@@ -18,6 +20,7 @@ class Handler:
                         stdout=PIPE,
                         stderr=STDOUT)
         result, *_ = process.communicate()
+
         try:
             instance.score = float(result.decode('utf-8'))
             instance.result = 'done'
@@ -32,13 +35,13 @@ class Handler:
         from file import File
 
         # TODO: assert index match
-        label = File.read_csv(labelname)
         test = File.read_csv(filename)
+        label = File.read_csv(labelname)
 
         if np.size(label, 0) != np.size(test, 0):
             print ("Instance number mismatch")
         else:
-            result = Metric.__subclasses__()[cate]()(label, test)
+            result = Metric.__subclasses__()[cate]()(test, label)
             print (result)
 
 if __name__ == '__main__':
