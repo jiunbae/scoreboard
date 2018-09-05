@@ -1,4 +1,4 @@
-# SSC
+# SSB
 
 Simple Score Board
 
@@ -10,6 +10,10 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
+Update `config.json`.
+
+Fianlly,
+
 ```
-python app.py
+python index.py
 ```
