@@ -1,4 +1,5 @@
 from datetime import datetime
+from collections import OrderedDict
 
 from sqlalchemy import Column, Integer, String, Text, DateTime
 from sqlalchemy.orm import relationship
@@ -44,9 +45,9 @@ class Challenge(Base):
         self.train = train and File(self.directory).write(train).name
         self.test = test and File(self.directory).write(test).name
 
-    def roler(self) -> dict:
+    def roles(self) -> dict:
         role = bin(self.board_role)[2:].zfill(len(self.board_roles))[::-1]
-        return { name: role[i] == '0' for i, name in enumerate(self.board_roles)}
+        return OrderedDict([(name, role[i] == '0') for i, name in enumerate(self.board_roles)])
 
     def __repr__(self) -> str:
         return ','.join(map(str, [self.id, self.title, self.desc, self.cate, self.start, self.due, self.board_role]))

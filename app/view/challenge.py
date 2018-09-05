@@ -60,8 +60,7 @@ def show(cid):
         'challenge': Challenge.formatter(content,
                                          target=lambda k, v: isinstance(v, datetime),
                                          format=lambda v: str(v)[:10]),
-        'rankings': Challenge.get_rankings(cid),
-        'rankrole': content.get('board_role', 0),
+        'ranking': Challenge.get_rankings(cid, not User.current().TA),
         'train': content.get('train'),
         'test': content.get('test'),
     })

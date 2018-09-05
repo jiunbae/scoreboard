@@ -1,4 +1,5 @@
 function updateRankBoard(role) {
+  console.log('update rank' + role);
   var boxes = $($('.rank-checkbox').get().reverse());
   boxes.each((i, r) => {
     let val = Math.pow(2, boxes.length - i - 1);
@@ -37,7 +38,9 @@ $(document).ready(function() {
       data: JSON.stringify({
         'board_role': val
       }), success: (r) => {
+        console.log(val);
         updateRankBoard(r.board_role);
+        console.log(r.board_role);
       }
     });
   });

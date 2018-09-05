@@ -1,49 +1,30 @@
 
   <h2>Scoreboard</h2>
   {% if user.TA %}
-    <div id="rankboard" hidden data-rank-checkbox="{{ rankrole }}" data-id="{{ challenge.id }}"></div>
+    <div id="rankboard" hidden data-rank-checkbox="{{ ranking.role }}" data-id="{{ challenge.id }}"></div>
   {% endif %}
 
   <table id="ranks" class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">Rank
+        {% for label in ranking.labels %}
+        <th scope="col">{{ label }}
           {% if user.TA %}
           <div class="form-check table-check">
-            <input class="form-check-input rank-checkbox" type="checkbox" value="" id="checkRank">
+            <input class="form-check-input rank-checkbox" type="checkbox" value="" id="checkRank-{{ label }}">
           </div>
           {% endif %}
         </th>
-        <th scope="col">User
-          {% if user.TA %}
-          <div class="form-check table-check">
-            <input class="form-check-input rank-checkbox" type="checkbox" value="" id="checkUser">
-          </div>
-          {% endif %}
-        </th>
-        <th scope="col">Score
-          {% if user.TA %}
-          <div class="form-check table-check">
-            <input class="form-check-input rank-checkbox" type="checkbox" value="" id="checkScore">
-          </div>
-          {% endif %}
-        </th>
-        <th scope="col">Time
-          {% if user.TA %}
-          <div class="form-check table-check">
-            <input class="form-check-input rank-checkbox" type="checkbox" value="" id="checkTime">
-          </div>
-          {% endif %}
-        </th>
+        {% endfor %}
       </tr>
     </thead>
     <tbody>
-      {% for ranking in rankings %}
+      {% for rank in ranking.rankings %}
       <tr>
-        <td scope="row">{{ ranking.rank }}</td>
-        <td>{{ ranking.user }}</td>
-        <td>{{ ranking.score }}</td>
-        <td>{{ ranking.time }}</td>
+        <td scope="row">{{ rank.rank }}</td>
+        <td>{{ rank.user }}</td>
+        <td>{{ rank.score }}</td>
+        <td>{{ rank.time }}</td>
       </tr>
       {% endfor %}
     </tbody>
