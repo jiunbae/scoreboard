@@ -9,7 +9,7 @@ def create_app(config: dict) -> Flask:
     app.config['RUN'] = config['RUN']
     app.config['PATH'] = PATH = config['PATH']
     try:
-        for path in app.config['PATH']:
+        for path in app.config['PATH'].values():
             makedirs(path)
     except OSError as e:
         pass
