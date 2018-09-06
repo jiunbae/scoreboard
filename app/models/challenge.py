@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from app import app
+from app import PATH
 from app.models import Base
 from app.lib.file import File
 from app.lib.metric import Metric
@@ -13,7 +13,7 @@ from app.lib.metric import Metric
 class Challenge(Base):
     __tablename__ = 'challenge'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
-    directory   = app.config['CHALLENGE_FOLDER']
+    directory   = PATH['CHALLENGE']
     categories  = Metric.all()
     board_roles = ['rank', 'user', 'score', 'time']
 

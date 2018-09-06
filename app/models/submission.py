@@ -4,14 +4,14 @@ from sqlalchemy import Column, Boolean, Integer, String, Float, DateTime, Foreig
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql import func
 
-from app import app
+from app import PATH
 from app.models import Base
 from app.lib.file import File
 
 class Submission(Base):
     __tablename__ = 'submission'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
-    directory   = app.config['SUBMISSION_FOLDER']
+    directory   = PATH['SUBMISSION']
 
     id          = Column(Integer, primary_key=True, unique=True)
     desc        = Column(String(128))

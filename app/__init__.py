@@ -1,3 +1,4 @@
+from os import makedirs
 from flask import Flask
 
 def create_app(config: dict) -> Flask:
@@ -5,8 +6,13 @@ def create_app(config: dict) -> Flask:
 
     # app config
     app.secret_key = config['SECURE']['secret_key']
-    app.config.update(config['APP'])
     app.config['RUN'] = config['RUN']
+    app.config['PATH'] = PATH = config['PATH']
+    try:
+        for path in app.config['PATH']:
+            makedirs(path)
+    except OSError as e:
+        pass
 
     # login manager
     from flask_login import LoginManager

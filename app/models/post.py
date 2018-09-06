@@ -4,13 +4,13 @@ from sqlalchemy import Column, Boolean, Integer, String, Text, DateTime, Foreign
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql import func
 
-from app import app
+from app import PATH
 from app.models import Base
 
 class Post(Base):
     __tablename__ = 'post'
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
-    directory   = app.config['POST_FOLDER']
+    directory   = PATH['POST']
     categories  = ['notice', 'qna']
 
     id          = Column(Integer, primary_key=True, unique=True)
