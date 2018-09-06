@@ -16,11 +16,8 @@ class Challenge(Controller):
         if 'board_role' in data:
             base = list(map(int, '0'+bin(instance.board_role)[2:].zfill(len(cls.model.board_roles))[::-1]))
             value = data.get('board_role')
-            print (base, value)
             base[abs(value)] = int(value > 0)
-            print (base)
             instance.board_role = int(''.join(map(str, base[1:][::-1])), 2)
-            print (instance.board_role)
         Session.commit()
         return instance
 
