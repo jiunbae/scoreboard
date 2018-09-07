@@ -5,5 +5,4 @@ pymysql
 numpy
 pandas
 markdown
-sklearn
-scipy
+scikit-learn
