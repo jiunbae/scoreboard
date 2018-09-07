@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block body %}
-  {% if user.TA %}
+  {% if post_edit %}
     {% with text="Edit" %}
       {% include "post_modal.html" %}
     {% endwith %}

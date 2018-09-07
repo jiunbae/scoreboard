@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block body %}
-  {% if user.TA %}
+  {% if post_create %}
     {% with text="New" %}
       {% include "post_modal.html" %}
     {% endwith %}
