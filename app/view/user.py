@@ -9,16 +9,17 @@ from app.controller import Submission
 user = Router('user')
 
 @login_required
+@user.route('/', methods=['GET'])
 def profile():
     instance = User.current()
     return render('user.html', submissions=User.submissions())
-user.route('/').GET = profile
 
+@user.route('/', methods=['POST'])
 def create():
     instance = User.create(request.get_json())
     return redirect(user)
-user.route('/').POST = create
 
+@user.route('/', methods=['PUT'])
 def change():
     response = {'status': 'ok'}
     try:
@@ -26,12 +27,11 @@ def change():
     except Exception as e:
         response.update({'status': 'failed', 'error': str(e)})
     return jsonify(response)
-user.route('/').PUT = change
 
+@user.route('/', methods=['DELETE'])
 def destroy(uid):
     instance = User.destroy(uid)
     return redirect(user)
-user.route('/').DELETE = destroy
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():

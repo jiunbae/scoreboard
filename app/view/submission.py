@@ -5,11 +5,13 @@ from app.controller import Submission
 
 submission = Router('submission')
 
+@submission.route('/<sid>', methods=['GET'])
 def show(sid):
     return render('submission.html', submission=Submission.show(sid))
-submission.route('/<sid>').GET = show
 
+
+@submission.route('/<sid>', methods=['DELETE'])
 def destroy(sid):
     instance = Submission.delete(sid)
     return redirect('/')
-submission.route('/<sid>').DELETE = destroy
+

@@ -1,11 +1,8 @@
-import glob
-from os.path import dirname, basename, isfile
-from typing import Callable
-from collections import defaultdict
-from urllib.parse import urljoin
-from functools import partial 
+from os.path import join
 
-from flask import render_template, request, redirect, flash, Markup, jsonify
+from flask import Blueprint
+from flask import render_template, redirect
+from flask import request, Markup, jsonify, flash
 
 from app import app
 from app.lib.attrcallback import AttrCallback
@@ -14,43 +11,26 @@ from app.controller import default_params
 def render(page, **params):
     return render_template(page, **(params.update(default_params()) or params))
 
-class Router:
-    methods = ['GET', 'POST', 'PUT', 'DELETE']
-    routers = list()
-    def __init__(self, route: str = '/'):
-        self.path = route
-        self.routes = defaultdict(dict)
-        self.url = None
-        self.attr = AttrCallback(self.setter, self.getter, Router.methods)
-        Router.routers.append((route, self.routes))
+class Router(Blueprint):
+    s = list()
+
+    def __init__(self, *args, **kwargs):
+        name = args[0]
+        super().__init__(*args, **{
+            'url_prefix': join('/', name),
+            'template_folder': join('../', 'templates', name),
+            'import_name': name,
+            **kwargs
+        })
+        Router.s.append(self)
 
     def __str__(self) -> str:
-        return self.path
-
-    def getter(self, method: str) -> str:
-        return method
-
-    def setter(self, method: str, handler: Callable) -> None:
-        self.routes[self.url][method] = handler
-
-    def route(self, url: str = '/') -> AttrCallback:
-        self.url = url
-        return self.attr
+        return self.name
 
 from app.lib.moduletools import import_subclass
 __all__ = list(map(lambda x: x.__name__, import_subclass(__path__, Router, locals())))
 
-# from app.view.challenge import challenge
-# from app.view.notice import notice
-# from app.view.submission import submission
-# from app.view.user import user
-
-for route, router in Router.routers:
-    for url, handler in router.items():
-        view = partial(lambda h, *args, **kwargs: h[request.method](*args, **kwargs), handler)
-        name = urljoin('//'+route, url)[1:]
-        view.__name__ = view.__qualname__ = '_route_' + name
-        app.route(name, methods=handler.keys())(view)
+any(map(app.register_blueprint, Router.s))
 
 @app.route('/')
 def index():

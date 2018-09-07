@@ -13,15 +13,17 @@ from app.controller import Challenge
 
 challenge = Router('challenge')
 
+@challenge.route('/', methods=['GET'])
 def index():
     return render('challenges.html',
                   challenges=Challenge.formatter(Challenge.index(sort_by=Challenge.model.id, reverse=True),
                                                  target=lambda k, v: isinstance(v, datetime),
                                                  format=lambda v: str(v)[:10]),
                   categories=Challenge.model.categories)
-challenge.route('/').GET = index
+
 
 @User.require_permission
+@challenge.route('/', methods=['POST'])
 def create():
     try:
         instance = Challenge.create({
@@ -38,8 +40,8 @@ def create():
         flash(str(e))
     finally:
         return redirect(challenge)
-challenge.route('/').POST = create
 
+@challenge.route('/<cid>', methods=['GET'])
 def show(cid):
     content = Challenge.show(cid)
     if not content:
@@ -64,9 +66,9 @@ def show(cid):
         'train': content.get('train'),
         'test': content.get('test'),
     })
-challenge.route('/<cid>').GET = show
 
 @User.require_login
+@challenge.route('/<cid>', methods=['POST'])
 def submit(cid):
     try:
         instance = Submission.create({
@@ -78,9 +80,9 @@ def submit(cid):
     except Exception as e:
         flash(str(e))
     return redirect(challenge)
-challenge.route('/<cid>').POST = submit
 
 @User.require_permission
+@challenge.route('/<cid>', methods=['PUT'])
 def update(cid):
     response = {'status': 'ok'}
     try:
@@ -90,9 +92,8 @@ def update(cid):
     finally:
         response.update({'board_role': Challenge.show(cid).board_role})
         return jsonify(response)
-challenge.route('/<cid>').PUT = update
 
+@challenge.route('/<cid>', methods=['DELETE'])
 def destroy(cid):
     instance = Challenge.delete(cid)
     return redirect(challenge)
-challenge.route('/<cid>').DELETE = destroy

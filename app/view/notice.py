@@ -6,13 +6,17 @@ from app.view import request, render, redirect, flash, Markup
 from app.controller import Post
 from app.controller import User
 
-notice = Router('notice')
+notice = Router('notice', template_folder='../templates/post')
 
+@notice.route('/', methods=['GET'])
 def index():
-    return render('posts.html', uri=str(notice), posts=Post.index(cate='notice', pack=False))
-notice.route('/').GET = index
+    return render('posts.html',
+                  uri=str(notice),
+                  post_create=User.current().TA,
+                  posts=Post.index(cate='notice', pack=False))
 
 @User.require_permission
+@notice.route('/', methods=['POST'])
 def create():
     instance = Post.create({
         'title': request.form.get('postTitle'),
@@ -21,16 +25,16 @@ def create():
         'uid': User.current().id,
     })
     return redirect(notice)
-notice.route('/').POST = create
 
+@notice.route('/<nid>', methods=['GET'])
 def show(nid):
-    return render('post.html', post=Post.formatter(Post.show(nid, pack=True),
-                                                   target=lambda k, v: k=='content',
-                                                   format=lambda v: Markup(Post.render_md(v))))
+    return render('post.html',
+                  post_edit=User.current().TA,
+                  post=Post.formatter(Post.show(nid, pack=True),
+                                      target=lambda k, v: k=='content',
+                                      format=lambda v: Markup(Post.render_md(v))))
 
-notice.route('/<nid>').GET = show
-
+@notice.route('/<nid>', methods=['DELETE'])
 def destroy(nid):
     instance = Post.delete(nid)
     return redirect('/')
-notice.route('/<nid>').DELETE = destroy
