@@ -1,5 +1,3 @@
-from flask_login import login_required
-
 from app import app
 from app.view import Router
 from app.view import request, render, redirect, flash, jsonify
@@ -8,12 +6,13 @@ from app.controller import Submission
 
 user = Router('user')
 
-@login_required
+@User.require_login
 @user.route('/', methods=['GET'])
 def profile():
     instance = User.current()
     return render('user.html', submissions=User.submissions())
 
+@User.require_permission
 @user.route('/', methods=['POST'])
 def create():
     instance = User.create(request.get_json())
@@ -47,8 +46,8 @@ def login():
             return render('login.html')
         return redirect(user)
 
+@User.require_login
 @app.route('/logout/', methods=['POST'])
-@login_required
 def logout():
     User.logout()
     return redirect(user)
