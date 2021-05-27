@@ -31,12 +31,19 @@ class Challenge(Controller):
                                           models.Submission.result=='done'))\
                              .order_by(models.Submission.score.desc())\
                              .all()
+        
+        sbs = []
+        usr = []
+        for s in submissions:
+            if s.uid not in usr:
+                sbs.append(s)
+                usr.append(s.uid)
         result = [{
             'rank': rank,
             'score': instance.score,
             'user': instance.user.studentid,
             'time': instance.time_created.strftime('%B %d, %H:%M'),
-        } for rank, instance in enumerate(submissions, 1)]
+        } for rank, instance in enumerate(sbs, 1)]
 
         if blur:
             result = list(map(lambda i: { k: v if role[k] else '###' for k, v in i.items()}, result))

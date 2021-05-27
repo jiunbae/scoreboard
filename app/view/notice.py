@@ -10,6 +10,9 @@ notice = Router('notice', template_folder='../templates/post')
 
 @notice.route('/', methods=['GET'])
 def index():
+    if User.current() == None:
+        flash("Notice: Login Required")
+        return redirect("/")
     return render('posts.html',
                   uri=str(notice),
                   post_create=User.current().TA,
@@ -24,7 +27,7 @@ def create():
         'cate': 'notice',
         'uid': User.current().id,
     })
-    return redirect(notice)
+    return redirect("/notice/")
 
 @notice.route('/<nid>', methods=['GET'])
 def show(nid):
