@@ -1,6 +1,7 @@
 import argparse
 from subprocess import Popen, PIPE, STDOUT
 from os.path import join
+import pandas as pd
 
 import numpy as np
 
@@ -37,7 +38,6 @@ class Handler:
         # TODO: assert index match
         test = File.read_csv(filename)
         label = File.read_csv(labelname)
-
         if np.size(label, 0) != np.size(test, 0):
             print ("Instance number mismatch")
         else:

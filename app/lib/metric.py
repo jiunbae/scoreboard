@@ -18,8 +18,7 @@ class Metric:
 
 class Classification(Metric):
     def __call__(self, tar: np.ndarray, obj: np.ndarray) -> float:
-        result = npa(lambda r: np.argmax(r), 1, tar[:, 1:])
-        return (np.add(result, 1) == obj[:, 1:].squeeze()).mean()
+        return (tar[:, 1:] == obj[:, 1:]).mean()
 
 class mIOU(Metric):
     def __call__(self, tar: np.ndarray, obj: np.ndarray) -> float:

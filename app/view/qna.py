@@ -10,6 +10,9 @@ qna = Router('qna', template_folder='../templates/post')
 
 @qna.route('/', methods=['GET'])
 def index():
+    if User.current() == None:
+        flash("QnA: Login Required")
+        return redirect("/")
     return render('posts.html',
                   uri='qna',
                   post_create=User.current(),
@@ -24,7 +27,7 @@ def create():
         'cate': 'qna',
         'uid': User.current().id,
     })
-    return redirect(qna)
+    return redirect('/qna/')
 
 @qna.route('/<nid>', methods=['GET'])
 def show(nid):

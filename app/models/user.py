@@ -12,7 +12,7 @@ class User(Base, UserMixin):
     __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     id          = Column(Integer, primary_key=True, unique=True)
-    studentid   = Column(String(12), unique=True)
+    studentid   = Column(String(8), unique=True)
     password    = Column(String(96))
     TA          = Column(Boolean, default=False)
     submissions = relationship("Submission")

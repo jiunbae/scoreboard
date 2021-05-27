@@ -44,10 +44,10 @@ def login():
         except Exception as e:
             flash(str(e))
             return render('login.html')
-        return redirect(user)
+        return redirect('/user/')
 
 @User.require_login
 @app.route('/logout/', methods=['POST'])
 def logout():
     User.logout()
-    return redirect(user)
+    return redirect('/login/')

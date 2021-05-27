@@ -15,6 +15,9 @@ challenge = Router('challenge')
 
 @challenge.route('/', methods=['GET'])
 def index():
+    if User.current() == None:
+        flash("Challenge: Login Required")
+        return redirect("/")
     return render('challenges.html',
                   challenges=Challenge.formatter(Challenge.index(sort_by=Challenge.model.id, reverse=True),
                                                  target=lambda k, v: isinstance(v, datetime),
@@ -26,6 +29,8 @@ def index():
 @challenge.route('/', methods=['POST'])
 def create():
     try:
+        if request.form.get('challengeTitle') == '':
+            raise Exception("Title can't be blank")
         instance = Challenge.create({
             'title': request.form.get('challengeTitle'),
             'cate': request.form.get('challengeType'),
@@ -39,7 +44,7 @@ def create():
     except Exception as e:
         flash(str(e))
     finally:
-        return redirect(challenge)
+        return redirect("/challenge/")
 
 @challenge.route('/<cid>', methods=['GET'])
 def show(cid):
@@ -79,7 +84,7 @@ def submit(cid):
         })
     except Exception as e:
         flash(str(e))
-    return redirect(challenge)
+    return redirect('/challenge/' + cid)
 
 @User.require_permission
 @challenge.route('/<cid>', methods=['PUT'])
@@ -96,4 +101,4 @@ def update(cid):
 @challenge.route('/<cid>', methods=['DELETE'])
 def destroy(cid):
     instance = Challenge.delete(cid)
-    return redirect(challenge)
+    return redirect('/challenge/')

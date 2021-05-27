@@ -1,7 +1,10 @@
 # Configure json
 config.json
-submissions/
-challenges/
+submission/
+challenge/
+post/
+.gitignore
+*.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
